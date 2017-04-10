@@ -9,7 +9,7 @@ import pprint
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
-from participant import jerry
+from participant import Participant
 
 client = MongoClient()
 db = client.test
@@ -21,5 +21,6 @@ def get_info(id):
     info = posts.find_one(ObjectId(id))
     return 'Here is info: %s' % info
 
-def heres_jerry():
-    return 'Here\'s Jerry: %s' % jerry.name
+def create_participant():
+    new_participant = request.get_json()
+    return str(new_participant)
