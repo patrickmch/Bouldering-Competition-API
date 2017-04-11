@@ -23,4 +23,5 @@ def get_info(id):
 
 def create_participant():
     new_participant = request.get_json()
-    return str(new_participant)
+    new_id = posts.insert_one(new_participant).inserted_id
+    return 'heelloo %s' % str(new_id)
