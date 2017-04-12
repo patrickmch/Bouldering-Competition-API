@@ -3,7 +3,7 @@ from flask import abort
 from flask import make_response
 from flask import request
 from flask import url_for
-
+import bson
 import pymongo
 import pprint
 from pymongo import MongoClient
@@ -17,12 +17,22 @@ collection = db.test_collection
 posts = db.posts
 
 
+validator = bson.son.SON([("collMod", "posts"),
+("validator", {"$or": [{"phone": {"$exists": True}},
+{"email": {"$exists": True}}]} ),
+("validationLevel", "strict")])
+
+db.command(validator)
+
 def get_info(id):
     info = posts.find_one(ObjectId(id))
     return 'Here is info: %s' % info
 
 def create_participant():
     new_participant = request.get_json()
-    new_id = posts.insert_one(new_participant).inserted_id
-    return 'heelloo %s' % str(new_id)
-    # return 'test'
+    try:
+        new_id = posts.insert_one(new_participant).inserted_id
+    except:
+        return "Validation failed"
+    else:
+        return str(new_id)
