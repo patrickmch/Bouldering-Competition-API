@@ -25,3 +25,4 @@ def create_participant():
     new_participant = request.get_json()
     new_id = posts.insert_one(new_participant).inserted_id
     return 'heelloo %s' % str(new_id)
+    # return 'test'
