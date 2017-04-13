@@ -1,9 +1,4 @@
-from flask import jsonify
-from flask import render_template
-from flask import flash
-from flask import current_app
-from flask import abort
-
+from setup import *
 from crud import *
 
 def api_routes(app):
