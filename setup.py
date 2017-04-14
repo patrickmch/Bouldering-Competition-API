@@ -40,7 +40,7 @@ participants_validation = {
         {"lname" : {"$type" : "string"}},
         {"birthday" : {"$type" : "string"}},
         {"sex" : {"$in" : ["m", "f"]}},
-        # {"email" : {"$regex": "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$"}},
+        {"email" : {"$regex": "(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"}},
     ]
 }
 
