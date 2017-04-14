@@ -7,6 +7,7 @@ def get_info(id):
 
 #create a new document in collection (specified as arg)
 def create_doc(collection):
+    collection = db[collection]
     # pull in the data from request
     new_doc = request.get_json()
     # if birthday field exists, format birthday as date
