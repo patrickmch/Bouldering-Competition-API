@@ -15,8 +15,11 @@ from datetime import datetime
 # database and colllection setup
 client = MongoClient()
 db = client.test
-collection = db.test_collection
-posts = db.posts
+# collection = db.test_collection
+# posts = db.posts
+participants = db.participants
+venues = db.venues
+competitions = db.competitions
 
 # function to validate collection fields
 
@@ -37,7 +40,7 @@ participants_validation = {
         {"lname" : {"$type" : "string"}},
         {"birthday" : {"$type" : "string"}},
         {"sex" : {"$in" : ["m", "f"]}},
-        {"email" : {"$regex", "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$"}},
+        # {"email" : {"$regex": "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$"}},
     ]
 }
 
@@ -53,7 +56,7 @@ competition_validation = {
     "$and" :
     [
         {"comp_name" : {"$type" : "string"}},
-        {"venue_id" : {"$type" : "array"}}
+        {"venue_id" : {"$type" : "array"}},
     ]
 }
-# collection_validation("posts", participants_validation, "strict")
+# collection_validation("participants", participants_validation, "strict")
