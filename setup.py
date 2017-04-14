@@ -1,4 +1,4 @@
-#setup functions, validation, and boilerplate
+# boilerplate
 from flask import Flask, jsonify, abort, make_response, request, url_for
 import bson
 import pymongo
@@ -11,21 +11,14 @@ import json
 import inspect
 import ast
 from datetime import datetime
+
+# database and colllection setup
 client = MongoClient()
 db = client.test
 collection = db.test_collection
 posts = db.posts
 
-def byteify(input):
-    if isinstance(input, dict):
-        return {byteify(key): byteify(value)
-                for key, value in input.iteritems()}
-    elif isinstance(input, list):
-        return [byteify(element) for element in input]
-    elif isinstance(input, unicode):
-        return input.encode('utf-8')
-    else:
-        return input
+# function to validate collection fields
 
 def collection_validation(collection_name, validation_dict, validation_level):
     # convert python dict to sorted dict type using bson's SON method: first item in the list is the command we want to use with the collection name; next is the validation dictionary; next is the validation level
@@ -36,6 +29,7 @@ def collection_validation(collection_name, validation_dict, validation_level):
     db.command(validator)
     print    "Validation Successful"
 
+# validation dictionaries
 participants_validation = {
     "$and" :
     [
@@ -43,8 +37,23 @@ participants_validation = {
         {"lname" : {"$type" : "string"}},
         {"birthday" : {"$type" : "string"}},
         {"sex" : {"$in" : ["m", "f"]}},
-        {"level" : {"$type" : "int"}}
+        {"email" : {"$regex", "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$"}},
     ]
 }
 
-collection_validation("posts", participants_validation, "strict")
+venue_validation = {
+    "$and" :
+    [
+        {"venue_name": {"$type" : "string"}},
+        {"venue_address" : {"$type" : "string"}}
+    ]
+}
+
+competition_validation = {
+    "$and" :
+    [
+        {"comp_name" : {"$type" : "string"}},
+        {"venue_id" : {"$type" : "array"}}
+    ]
+}
+# collection_validation("posts", participants_validation, "strict")
