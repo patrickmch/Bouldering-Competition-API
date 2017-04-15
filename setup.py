@@ -33,14 +33,16 @@ def collection_validation(collection_name, validation_dict, validation_level):
     print    "Validation Successful"
 
 # validation dictionaries
+email_regex = {"$regex": "(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"}
+
 participants_validation = {
     "$and" :
     [
         {"fname" : {"$type" : "string"}},
         {"lname" : {"$type" : "string"}},
-        {"birthday" : {"$type" : "string"}},
+        {"birthday" : {"$exists" : "true"}},
         {"sex" : {"$in" : ["m", "f"]}},
-        {"email" : {"$regex": "(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"}},
+        {"email" : email_regex},
     ]
 }
 
@@ -48,7 +50,8 @@ venue_validation = {
     "$and" :
     [
         {"venue_name": {"$type" : "string"}},
-        {"venue_address" : {"$type" : "string"}}
+        {"venue_address" : {"$type" : "string"}},
+        {"venue_email" : email_regex}
     ]
 }
 
@@ -56,7 +59,8 @@ competition_validation = {
     "$and" :
     [
         {"comp_name" : {"$type" : "string"}},
-        {"venue_id" : {"$type" : "array"}},
+        {"comp_date" : {"$exists" : "true"}},
+        {"venue_id" : {"$type" : "array"}}
     ]
 }
-# collection_validation("participants", participants_validation, "strict")
+collection_validation("participants", participants_validation, "strict")
