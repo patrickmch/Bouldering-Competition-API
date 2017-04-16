@@ -1,11 +1,12 @@
 from setup import *
 
 # get doc by doc id
-def get_info(id):
-    info = participants.find_one(ObjectId(id))
+def find_doc(collection_name, id):
+    collection = db[collection_name]
+    info = collection.find_one(ObjectId(id))
     return str(info)
 
-#create a new document in collection (specified as arg)
+#create a new document in the collection specified in url
 def create_doc(collection_name):
     collection = db[collection_name]
     new_doc = request.get_json()
@@ -23,6 +24,7 @@ def create_doc(collection_name):
     else:
         return str(new_id)
 
+#update a new document in the collection specified in url
 def update_doc(collection_name):
     collection = db[collection_name]
     update_info = request.get_json()
@@ -41,3 +43,15 @@ def update_doc(collection_name):
             return "Failed to update \'%s\' with an id of \'%s\'" % (update_info[1]['$set'].keys()[0], update_info[0]['_id'])
         else:
             return  "%s record was successfully updated" % str(result.matched_count)
+
+def delete_doc(collection_name, id):
+    collection = db[collection_name]
+    try:
+        result = collection.delete_one({"_id" : ObjectId(id)})
+    except:
+        raise
+    else:
+        if result.deleted_count < 1:
+            return "No records were deleted with id %s" % id
+        else:
+            return "%s record with the id %s was deleted successfully" % (str(result.deleted_count), id)
