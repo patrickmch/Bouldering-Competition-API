@@ -22,3 +22,11 @@ def create_doc(collection):
         return "Failed to create a participant as one or more required fields were missing or incomplete"
     else:
         return str(new_id)
+
+def update_doc(collection):
+    collection = db[collection]
+    update_info = request.get_json()
+    update_info[0]['_id'] = ObjectId(update_info[0]['_id'])
+    # return str(update_info[0])
+    result = collection.update_one(update_info[0], update_info[1], False)
+    return str(result.matched_count)

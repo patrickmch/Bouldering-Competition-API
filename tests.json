@@ -7,6 +7,13 @@
   "email" : "something@test.com"
 }
 
+//update
+[
+	{"_id" : "58f380a5e75ab5244ff358ef"},
+	{"$set" : {"fname" : "jerry"}}
+]
+
+
 //competitions
 {
   "comp_name": "test",
