@@ -10,10 +10,13 @@ def create_doc(collection):
     collection = db[collection]
     # pull in the data from request
     new_doc = request.get_json()
-    # if birthday field exists, format birthday as date
-    if hasattr(new_doc, "birthday"):
+    # if date field exists, format as date
+    try:
         new_doc["birthday"] = datetime.strptime(new_doc["birthday"], "%d/%m/%Y")
-    pprint.pprint(new_doc)
+        new_doc["comp_date"] = datetime.strptime(new_doc["comp_date"], "%d/%m/%Y")
+    except:
+        pass
+        
     try:
         new_id = collection.insert_one(new_doc).inserted_id
     except pymongo.errors.WriteError as error:

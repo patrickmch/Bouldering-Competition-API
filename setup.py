@@ -63,4 +63,4 @@ competition_validation = {
         {"venue_id" : {"$type" : "array"}}
     ]
 }
-collection_validation("participants", participants_validation, "strict")
+# collection_validation("participants", participants_validation, "strict")
