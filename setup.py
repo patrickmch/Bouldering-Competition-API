@@ -60,7 +60,7 @@ competition_validation = {
     [
         {"comp_name" : {"$type" : "string"}},
         {"comp_date" : {"$exists" : "true"}},
-        {"venue_id" : {"$type" : "array"}}
+        {"venue_id" : {"$exists" : "true"}}
     ]
 }
-# collection_validation("participants", participants_validation, "strict")
+collection_validation("competitions", competition_validation, "strict")

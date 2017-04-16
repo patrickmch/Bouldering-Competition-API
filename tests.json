@@ -1,0 +1,22 @@
+//participants
+{
+  "fname" : "tester",
+  "lname" : "test",
+  "birthday" : "01/01/1960",
+  "sex" : "m",
+  "email" : "something@test.com"
+}
+
+//competitions
+{
+  "comp_name": "test",
+  "comp_date": "01/01/2017",
+  "venue_id" : "58f381c9e75ab5244ff358f0"
+}
+
+//venues
+{
+  "venue_name": "Test Venue",
+  "venue_address": "3078 8th st",
+  "venue_email": "test@test.com"
+}
