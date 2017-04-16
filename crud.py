@@ -6,8 +6,8 @@ def get_info(id):
     return str(info)
 
 #create a new document in collection (specified as arg)
-def create_doc(collection):
-    collection = db[collection]
+def create_doc(collection_name):
+    collection = db[collection_name]
     new_doc = request.get_json()
     if collection == db.participants:
         new_doc["birthday"] = datetime.strptime(new_doc["birthday"], "%d/%m/%Y")
@@ -23,10 +23,21 @@ def create_doc(collection):
     else:
         return str(new_id)
 
-def update_doc(collection):
-    collection = db[collection]
+def update_doc(collection_name):
+    collection = db[collection_name]
     update_info = request.get_json()
-    update_info[0]['_id'] = ObjectId(update_info[0]['_id'])
-    # return str(update_info[0])
-    result = collection.update_one(update_info[0], update_info[1], False)
-    return str(result.matched_count)
+
+    try:
+        update_info[0]['_id'] = ObjectId(update_info[0]['_id'])
+        result = collection.update_one(update_info[0], update_info[1], False)
+    except KeyError as error:
+        return "A KeyError was raised. Please make sure that you are using the \'_id\' key for all updates, and that the key for the field \'%s\' exists in the \'%s\' collection." % (update_info[1]['$set'].keys()[0], collection_name)
+    except bson.errors.InvalidId as error:
+        return "Invalid id"
+    else:
+        if result.matched_count < 1:
+            return "No matching record exists for id %s" % update_info[0]['_id']
+        elif result.modified_count < 1:
+            return "Failed to update \'%s\' with an id of \'%s\'" % (update_info[1]['$set'].keys()[0], update_info[0]['_id'])
+        else:
+            return  "%s record was successfully updated" % str(result.matched_count)
