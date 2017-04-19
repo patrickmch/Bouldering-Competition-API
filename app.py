@@ -1,6 +1,6 @@
 from setup import *
-from routes import api_routes
 from crud import *
+from authenticate_user import *
 
 app = Flask(__name__)
 generc_url_args = '<string:id>/<string:collection_name>/'
@@ -24,6 +24,7 @@ def read(collection_name, id):
 def update(collection_name, id):
     return update_doc(collection_name)
 
+# TODO currently a user can only delete their own profile
 @app.route('/api/delete_doc/%s' % generc_url_args, methods= generic_methods)
 @require_appkey
 def delete(collection_name, id):
