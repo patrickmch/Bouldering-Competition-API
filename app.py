@@ -1,5 +1,6 @@
 from setup import *
 from routes import api_routes
+from crud import *
 
 app = Flask(__name__)
 
@@ -12,3 +13,8 @@ def index():
 @app.route('/hello')
 def hello():
     return 'Hello, World'
+
+@app.route('/api/create_doc/<string:id>/<string:collection_name>', methods=['GET', 'POST'])
+@require_appkey
+def create_user(collection_name):
+    return create_doc(collection_name)

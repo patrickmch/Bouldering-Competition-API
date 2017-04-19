@@ -16,7 +16,6 @@ def create_doc(collection_name):
         if query.count() > 0:
             return "The email you provided is already in use."
         new_doc["birthday"] = datetime.strptime(new_doc["birthday"], "%d/%m/%Y")
-
     elif collection == db.competitions:
         new_doc["comp_date"] = datetime.strptime(new_doc["comp_date"], "%d/%m/%Y")
         new_doc["venue_id"] = ObjectId(new_doc["venue_id"])
@@ -60,3 +59,17 @@ def delete_doc(collection_name, id):
             return "No records were deleted with id %s" % id
         else:
             return "%s record with the id %s was deleted successfully" % (str(result.deleted_count), id)
+
+# TODO put the decorator in app.py/ move the routes over to other style and test this code
+def require_appkey(view_function):
+    @wraps(view_function)
+    # the new, post-decoration function. Note *args and **kwargs here.
+    def decorated_function(*args, **kwargs):
+        app_key = ObjectId(kwargs.get("id"))
+        result = db.participants.find_one({"_id" : ObjectId(app_key)})
+        if result["_id"] == app_key:
+            return str(kwargs)
+            return view_function(*args, **kwargs)
+        else:
+            abort(401)
+    return decorated_function

@@ -31,6 +31,7 @@ To Do:
 -find a way to create a new user
   /+make sure the user is not already in the system (email)
   /+assign an api key to the user
+  +use api keys to validate that the data being accessed/written is appropriate for user
 -create user roles
   +admin
   +participant
