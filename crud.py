@@ -63,12 +63,10 @@ def delete_doc(collection_name, id):
 # TODO put the decorator in app.py/ move the routes over to other style and test this code
 def require_appkey(view_function):
     @wraps(view_function)
-    # the new, post-decoration function. Note *args and **kwargs here.
     def decorated_function(*args, **kwargs):
         app_key = ObjectId(kwargs.get("id"))
-        result = db.participants.find_one({"_id" : ObjectId(app_key)})
-        if result["_id"] == app_key:
-            return str(kwargs)
+        find_key = db.participants.find_one({"_id" : ObjectId(app_key)})
+        if find_key["_id"] == app_key:
             return view_function(*args, **kwargs)
         else:
             abort(401)
