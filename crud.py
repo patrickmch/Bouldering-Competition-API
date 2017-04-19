@@ -11,7 +11,12 @@ def create_doc(collection_name):
     collection = db[collection_name]
     new_doc = request.get_json()
     if collection == db.participants:
+        # check to make sure user does not already have an account
+        query = collection.find({"email" : new_doc["email"]})
+        if query.count() > 0:
+            return "The email you provided is already in use."
         new_doc["birthday"] = datetime.strptime(new_doc["birthday"], "%d/%m/%Y")
+
     elif collection == db.competitions:
         new_doc["comp_date"] = datetime.strptime(new_doc["comp_date"], "%d/%m/%Y")
         new_doc["venue_id"] = ObjectId(new_doc["venue_id"])

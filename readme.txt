@@ -9,17 +9,32 @@ Example:
 Note that the first key value pair in the list is the command to run (collMod) followed by the collection name (test_collection in this case), the second is the validation rules we want to enforce, and the third is the validation level. Note also that if the collection does not exist, Pymongo will throw an error.
 
 
-Collection Structure:
+Collection Schema:
 
--participants
+-users
   fname, lname, birthday, sex, email, password
   -sends
-    route_id, attempts
+    route_id, attempts, validated_by
+  -role
 
 -venue
-  name, address, competition_id
+  name, address, competition_ids
 
 -competitions
-  name, participant_ids, venue_id
+  name, participant_ids, venue_ids
     -routes
       name, grade, points
+
+
+To Do:
+-address fields have separate street, zip, etc
+-find a way to create a new user
+  /+make sure the user is not already in the system (email)
+  /+assign an api key to the user
+-create user roles
+  +admin
+  +participant
+-way to create competitions
+  +only admins can create competitions
+-have other user validate send
+-pull down results for the comp
