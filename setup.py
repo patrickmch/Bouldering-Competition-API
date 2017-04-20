@@ -1,4 +1,4 @@
-# boilerplate
+# boilerplate and imports
 from flask import Flask, jsonify, abort, make_response, request, url_for
 import bson
 import pymongo
@@ -16,13 +16,11 @@ from datetime import datetime
 # database and colllection setup
 client = MongoClient()
 db = client.test
-# collection = db.test_collection
-# posts = db.posts
 participants = db.participants
 venues = db.venues
 competitions = db.competitions
 
-# function to validate collection fields
+# function to validate collection information
 
 def collection_validation(collection_name, validation_dict, validation_level):
     # convert python dict to sorted dict type using bson's SON method: first item in the list is the command we want to use with the collection name; next is the validation dictionary; next is the validation level
@@ -33,7 +31,9 @@ def collection_validation(collection_name, validation_dict, validation_level):
     db.command(validator)
     print    "Validation Successful"
 
-# validation dictionaries
+# validation dictionaries: these determine what data MongoDB allow to be stored in each collection.
+
+#this is a regex to enforce the storage of valid emails
 email_regex = {"$regex": "(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"}
 
 participants_validation = {
@@ -64,4 +64,4 @@ competition_validation = {
         {"venue_id" : {"$exists" : "true"}}
     ]
 }
-collection_validation("competitions", competition_validation, "strict")
+# collection_validation("competitions", competition_validation, "strict")

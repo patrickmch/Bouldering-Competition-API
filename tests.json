@@ -1,10 +1,21 @@
 //participants
 {
-  "fname" : "tester",
+  "fname" : "participant",
   "lname" : "test",
   "birthday" : "01/01/1960",
   "sex" : "m",
-  "email" : "something@test.com"
+  "email" : "someasdfthing@test.com",
+  "role" : "participant"
+}
+// 58f8ff76e75ab5436d99e2de
+
+{
+  "fname" : "admin",
+  "lname" : "test",
+  "birthday" : "01/01/1960",
+  "sex" : "m",
+  "email" : "asd@test.com",
+  "role" : "admin"
 }
 
 //update

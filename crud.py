@@ -6,7 +6,7 @@ def find_doc(collection_name, id):
     info = collection.find_one(ObjectId(id))
     return str(info)
 
-#create a new document in the collection specified in url
+
 def create_doc(collection_name):
     collection = db[collection_name]
     new_doc = request.get_json()
@@ -15,9 +15,11 @@ def create_doc(collection_name):
         query = collection.find({"email" : new_doc["email"]})
         if query.count() > 0:
             return "The email you provided is already in use."
+        #create new datetime object for easier querying
         new_doc["birthday"] = datetime.strptime(new_doc["birthday"], "%d/%m/%Y")
     elif collection == db.competitions:
         new_doc["comp_date"] = datetime.strptime(new_doc["comp_date"], "%d/%m/%Y")
+        #add a venue id to the competitions to enforce a relationship between the two collections
         new_doc["venue_id"] = ObjectId(new_doc["venue_id"])
     try:
         new_id = collection.insert_one(new_doc).inserted_id
@@ -28,12 +30,12 @@ def create_doc(collection_name):
     else:
         return str(new_id)
 
-#update a new document in the collection specified in url
+#TODO update_doc allows others to edit their profile (this should require authorization)
 def update_doc(collection_name):
     collection = db[collection_name]
     update_info = request.get_json()
-
     try:
+        #to be searchable the doc id must not be a string but an ObjectId
         update_info[0]['_id'] = ObjectId(update_info[0]['_id'])
         result = collection.update_one(update_info[0], update_info[1], False)
     except KeyError as error:
@@ -49,6 +51,7 @@ def update_doc(collection_name):
             return  "%s record was successfully updated" % str(result.matched_count)
 
 def delete_doc(collection_name, id):
+    #currently, users can only delete their own profiles
     collection = db[collection_name]
     try:
         result = collection.delete_one({"_id" : ObjectId(id)})
