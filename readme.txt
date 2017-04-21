@@ -40,3 +40,4 @@ To Do:
 -have other user validate send
 -function to pull down results for the comp
 -create function so admins can edit/delete other user but participants can only do so for themselves
+-create user password field w/encryption
