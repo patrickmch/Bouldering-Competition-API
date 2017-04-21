@@ -1,16 +1,15 @@
 from setup import *
 class Crud:
     def __init__(self, **kwargs):
-        self.collection = db[kwargs['collection_name']]
+        self.collection_name = kwargs['collection_name']
+        self.collection = db[self.collection_name]
         self.request = kwargs['request']
-        self.app_key = kwargs['app_key']
+        self._id = kwargs['_id']
         self.user = kwargs['user']
 
-    def find_doc(collection_name, id):
-        collection = db[collection_name]
-        info = collection.find_one(ObjectId(id))
+    def find_doc(self):
+        info = self.collection.find_one(ObjectId(self._id))
         return str(info)
-
 
     def create_doc(self):
         request = self.request
@@ -35,30 +34,28 @@ class Crud:
             return "success %s" % str(new_id)
 
     #TODO update_doc allows others to edit their profile (this should require authorization)
-    def update_doc(collection_name):
-        collection = db[collection_name]
-        update_info = request.get_json()
+    def update_doc(self):
+        request = self.request
         try:
             #to be searchable the doc id must not be a string but an ObjectId
-            update_info[0]['_id'] = ObjectId(update_info[0]['_id'])
-            result = collection.update_one(update_info[0], update_info[1], False)
+            request[0]['_id'] = ObjectId(request[0]['_id'])
+            result = self.collection.update_one(request[0], request[1], False)
         except KeyError as error:
-            return "A KeyError was raised. Please make sure that you are using the \'_id\' key for all updates, and that the key for the field \'%s\' exists in the \'%s\' collection." % (update_info[1]['$set'].keys()[0], collection_name)
+            return "A KeyError was raised. Please make sure that you are using the \'_id\' key for all updates, and that the key for the field \'%s\' exists in the \'%s\' collection." % (request[1]['$set'].keys()[0], self.collection_name)
         except bson.errors.InvalidId as error:
             return "Invalid id"
         else:
             if result.matched_count < 1:
-                return "No matching record exists for id %s" % update_info[0]['_id']
+                return "No matching record exists for id %s" % request[0]['_id']
             elif result.modified_count < 1:
-                return "Failed to update \'%s\' with an id of \'%s\'" % (update_info[1]['$set'].keys()[0], update_info[0]['_id'])
+                return "Failed to update \'%s\' with an id of \'%s\'" % (request[1]['$set'].keys()[0], request[0]['_id'])
             else:
                 return  "%s record was successfully updated" % str(result.matched_count)
 
-    def delete_doc(collection_name, id):
+    def delete_doc(self):
         #currently, users can only delete their own profiles
-        collection = db[collection_name]
         try:
-            result = collection.delete_one({"_id" : ObjectId(id)})
+            result = self.collection.delete_one({"_id" : self._id})
         except:
             raise
         else:

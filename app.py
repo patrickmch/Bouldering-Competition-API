@@ -15,7 +15,6 @@ def url_string(func_to_call):
 @app.route(url_string('create_doc'), methods= generic_methods)
 @filter_request
 def create(**kwargs):
-    # return str(kwargs['collection_name'])
     new_doc = Crud(**kwargs)
     return new_doc.create_doc()
 
@@ -25,15 +24,18 @@ def create_user():
 
 @app.route(url_string('find_doc'), methods= generic_methods)
 @filter_request
-def read(collection_name, id):
-    return find_doc(collection_name, id)
+def read(**kwargs):
+    new_search = Crud(**kwargs)
+    return new_search.find_doc()
 
 @app.route(url_string('update_doc'), methods= generic_methods)
 @filter_request
-def update(collection_name, id):
-    return update_doc(collection_name)
+def update(**kwargs):
+    update = Crud(**kwargs)
+    return update.update_doc()
 
 @app.route(url_string('delete_doc'), methods= generic_methods)
 @filter_request
-def delete(collection_name, id):
-    return delete_doc(collection_name, id)
+def delete(**kwargs):
+    delete = Crud(**kwargs)
+    return delete.delete_doc()

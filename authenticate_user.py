@@ -12,7 +12,7 @@ def filter_request(view_function):
         request = request.get_json()
         # TODO this can't be called for create_user
         is_valid_appkey(app_key, collection_name, user)
-        return view_function(collection_name = collection_name, user = user, app_key = app_key, request = request)
+        return view_function(collection_name = collection_name, user = user, _id = app_key, request = request)
     return decorated_function
 
 # user authentication/authorization
