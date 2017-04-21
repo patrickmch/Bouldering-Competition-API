@@ -32,10 +32,11 @@ To Do:
   /+make sure the user is not already in the system (email)
   /+assign an api key to the user
 -create user roles
-  +admin
-  +participant
-  +use api keys to validate that the data being accessed/written is appropriate for user
+  /+admin
+  /+participant
+  /+use api keys to validate that the data being accessed/written is appropriate for user
 -way to create competitions
-  +only admins can create competitions
+  /+only admins can create competitions
 -have other user validate send
--pull down results for the comp
+-function to pull down results for the comp
+-create function so admins can edit/delete other user but participants can only do so for themselves

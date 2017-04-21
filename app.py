@@ -4,12 +4,15 @@ from authenticate_user import *
 
 app = Flask(__name__)
 
-#create variables storing generic info to keep the code DRY
-generc_url_args = '<string:id>/<string:collection_name>/'
+# create variable/function with generic info to keep the code DRY
+# all urls take function to call, and (with the exception of create_user) take an id (used as api_key) and the
+# collection_name of collection to be modified
 generic_methods = ['GET', 'POST']
+def url_string(func_to_call):
+    return '/api/%s/<string:id>/<string:collection_name>/' % func_to_use
 
 #url rules
-@app.route('/api/create_doc/%s' % generc_url_args, methods= generic_methods)
+@app.route(url_string('create_doc') % generc_url_args, methods= generic_methods)
 @require_appkey
 def create(collection_name, id):
     return create_doc(collection_name)
@@ -18,17 +21,17 @@ def create(collection_name, id):
 def create_user():
     return create_doc('participants')
 
-@app.route('/api/find_doc/%s' % generc_url_args, methods= generic_methods)
+@app.route(url_string('find_doc') % generc_url_args, methods= generic_methods)
 @require_appkey
 def read(collection_name, id):
     return find_doc(collection_name, id)
 
-@app.route('/api/update_doc/%s' % generc_url_args, methods= generic_methods)
+@app.route(url_string('update_doc') % generc_url_args, methods= generic_methods)
 @require_appkey
 def update(collection_name, id):
     return update_doc(collection_name)
 
-@app.route('/api/delete_doc/%s' % generc_url_args, methods= generic_methods)
+@app.route(url_string('delete_doc') % generc_url_args, methods= generic_methods)
 @require_appkey
 def delete(collection_name, id):
     return delete_doc(collection_name, id)
