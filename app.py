@@ -19,7 +19,9 @@ def create(**kwargs):
     return new_doc.create_doc()
 
 @app.route('/api/create_user/', methods= generic_methods)
-def create_user(**kwargs):
+@filter_request
+def create_user(request):
+    # this is a bit of a hack: pass some irrelevant info to crud
     user = Crud(collection_name = 'participants',_id = 0, user = request, request = request)
     return user.create_doc()
 

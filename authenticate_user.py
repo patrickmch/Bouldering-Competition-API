@@ -8,12 +8,12 @@ def filter_request(view_function):
         #get the app key, collection name, and user data
         request = request.get_json()
         if not kwargs:
-            # return str(request)
-            return view_function()
+            # if there are no keyword arguments create_user is being called
+            # return the view function and create a new user
+            return view_function(request)
         collection_name = kwargs.get("collection_name")
         app_key = ObjectId(kwargs.get("id"))
         user = db.participants.find_one({"_id" : ObjectId(app_key)})
-        # TODO this can't be called for create_user
         is_valid_appkey(app_key, collection_name, user)
         edit_self(app_key, request)
         return view_function(collection_name = collection_name, user = user, _id = app_key, request = request)
