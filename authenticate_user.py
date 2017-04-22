@@ -6,14 +6,30 @@ def filter_request(view_function):
         #TODO this is sloppy, but breaks without it
         from flask import request
         #get the app key, collection name, and user data
+        request = request.get_json()
+        if not kwargs:
+            # return str(request)
+            return view_function()
         collection_name = kwargs.get("collection_name")
         app_key = ObjectId(kwargs.get("id"))
         user = db.participants.find_one({"_id" : ObjectId(app_key)})
-        request = request.get_json()
         # TODO this can't be called for create_user
         is_valid_appkey(app_key, collection_name, user)
+        edit_self(app_key, request)
         return view_function(collection_name = collection_name, user = user, _id = app_key, request = request)
     return decorated_function
+
+
+# check if the user is sending other users' data and if they are authorized to do so
+def edit_self(user, request):
+    if user["_id"] != request["_id"] and user["role"] == "admin":
+        return
+    elif user["_id"] == request["_id"]:
+        return
+    else:
+        #user not authorized to modify others' info
+        #TODO better error messages along side this??
+        abort(403)
 
 # user authentication/authorization
 # require app_key requires the user to send a key parameter (the user id- NOT reccommended for live applications)

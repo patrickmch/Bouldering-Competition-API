@@ -37,8 +37,7 @@ class Crud:
     def update_doc(self):
         request = self.request
         try:
-            #to be searchable the doc id must not be a string but an ObjectId
-            request[0]['_id'] = ObjectId(request[0]['_id'])
+            request[0]['_id'] = self._id
             result = self.collection.update_one(request[0], request[1], False)
         except KeyError as error:
             return "A KeyError was raised. Please make sure that you are using the \'_id\' key for all updates, and that the key for the field \'%s\' exists in the \'%s\' collection." % (request[1]['$set'].keys()[0], self.collection_name)

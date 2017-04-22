@@ -19,8 +19,9 @@ def create(**kwargs):
     return new_doc.create_doc()
 
 @app.route('/api/create_user/', methods= generic_methods)
-def create_user():
-    return create_doc('participants')
+def create_user(**kwargs):
+    user = Crud(collection_name = 'participants',_id = 0, user = request, request = request)
+    return user.create_doc()
 
 @app.route(url_string('find_doc'), methods= generic_methods)
 @filter_request
