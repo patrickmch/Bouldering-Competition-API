@@ -1,5 +1,5 @@
 # boilerplate and imports
-from flask import Flask, jsonify, abort, make_response, url_for
+from flask import Flask, jsonify, request, abort, make_response, url_for
 import bson
 import pymongo
 from pprint import pprint

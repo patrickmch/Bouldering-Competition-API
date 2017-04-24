@@ -3,16 +3,15 @@ from setup import *
 def filter_request(view_function):
     @wraps(view_function)
     def decorated_function(**kwargs):
-        #TODO this is sloppy, but breaks without it
-        from flask import request
         #get the app key, collection name, and user data
-        request = request.get_json()
+        req = request.get_json()
         if not kwargs:
             # if there are no keyword arguments create_user is being called
             # return the view function and create a new user
             return view_function(request)
         collection_name = kwargs.get("collection_name")
         app_key = ObjectId(kwargs.get("id"))
+        #TODO what happens if no user is found? (currently will throw keyerror on 'role')
         user = db.participants.find_one({"_id" : app_key})
         is_valid_appkey(app_key, collection_name, user)
         edit_self(user, request)
