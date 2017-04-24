@@ -13,9 +13,9 @@ def filter_request(view_function):
             return view_function(request)
         collection_name = kwargs.get("collection_name")
         app_key = ObjectId(kwargs.get("id"))
-        user = db.participants.find_one({"_id" : ObjectId(app_key)})
+        user = db.participants.find_one({"_id" : app_key})
         is_valid_appkey(app_key, collection_name, user)
-        edit_self(app_key, request)
+        edit_self(user, request)
         return view_function(collection_name = collection_name, user = user, _id = app_key, request = request)
     return decorated_function
 
