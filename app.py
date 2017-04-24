@@ -21,9 +21,9 @@ def create(**kwargs):
 @app.route('/api/create_user/', methods= generic_methods)
 @filter_request
 def create_user(request):
-    # this is a bit of a hack: pass some irrelevant info to crud
-    user = Crud(collection_name = 'participants',_id = 0, user = request, request = request)
-    return user.create_doc()
+    # pass only the request object as the rest of the kwargs default to a new user
+    new_user = Crud(request = request)
+    return new_user.create_doc()
 
 @app.route(url_string('find_doc'), methods= generic_methods)
 @filter_request

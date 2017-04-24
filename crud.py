@@ -1,11 +1,12 @@
 from setup import *
 class Crud:
     def __init__(self, **kwargs):
-        self.collection_name = kwargs['collection_name']
+        # defaults below are for a new user
+        self.collection_name = kwargs.get('collection_name', 'participants')
         self.collection = db[self.collection_name]
-        self.request = kwargs['request']
-        self._id = kwargs['_id']
-        self.user = kwargs['user']
+        self.request = kwargs('request')
+        self._id = kwargs('_id', 0)
+        self.user = kwargs('user', 'new_user')
 
     def find_doc(self):
         info = self.collection.find_one(ObjectId(self._id))
@@ -13,8 +14,8 @@ class Crud:
 
     def create_doc(self):
         request = self.request
-        if self.collection == db.participants:
-            # check to make sure user does not already have an account
+        if self._id == 0:
+            # if new_user check email to make sure it is not a duplicate account
             query = self.collection.find({"email" : request["email"]})
             if query.count() > 0:
                 return "The email you provided is already in use."
@@ -33,7 +34,6 @@ class Crud:
         else:
             return "success %s" % str(new_id)
 
-    #TODO update_doc allows others to edit their profile (this should require authorization)
     def update_doc(self):
         request = self.request
         try:
