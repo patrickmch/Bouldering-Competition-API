@@ -4,9 +4,9 @@ class Crud:
         # defaults below are for a new user
         self.collection_name = kwargs.get('collection_name', 'participants')
         self.collection = db[self.collection_name]
-        self.request = kwargs('request')
-        self._id = kwargs('_id', 0)
-        self.user = kwargs('user', 'new_user')
+        self.request = kwargs.get('request')
+        self._id = kwargs.get('_id', 0)
+        self.user = kwargs.get('user', 'new_user')
 
     def find_doc(self):
         info = self.collection.find_one(ObjectId(self._id))
