@@ -15,6 +15,6 @@ class User:
         elif self.vars.get('_id') != req_id:
             """pass the collection name and user role to determine if user is authorized to modify a collection
             based on values stored in a dictionary"""
-            return authorization[collection_name][self.vars.get('role')]:
+            return authorization[collection_name][self.vars.get('role')]
         else:
             return False

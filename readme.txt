@@ -33,4 +33,3 @@ To Do:
 -create user password field w/encryption
   +use flask user authentication
 -use flask validation
--make the user authentication one class

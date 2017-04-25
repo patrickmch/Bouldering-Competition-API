@@ -22,20 +22,17 @@ authorization = {
 def handle_request(view_function):
     @wraps(view_function)
     def decorated_function(**kwargs):
-        #get the app key, collection name, and user data
-        #kwargs has user id and collection name passed in url (if any)
+        # kwargs has user id and collection name passed in url (if any)
+        # the request's user id and the kwarg's user id will be different if the user is trying to edit another user
         req = request.get_json()
-        user_id = ObjectId(kwargs.get("id"))
-        try:
-            user = User(db.participants.find_one({"_id" : ObjectId(user_id)}))
-        except:
-            # no user id means create user is being called: return the view function
-            user = User(None)
+        if not kwargs:
+            # assumption is that no kwargs means create user is being called: return the view function
             return view_function(req)
+        user = User(db.participants.find_one({"_id" : ObjectId(kwargs.get("id"))}))
         collection_name = kwargs.get("collection_name")
-        if user.is_valid_appkey(collection_name, req['_id'], authorization):
+        if user.can_edit_request(req["_id"], collection_name, authorization):
             return view_function(collection_name = collection_name, user = user, request = request)
         else:
-            #user not authorized
-            abort(401)
+            #user not authenticated
+            abort(403, "We could not verify that you have permission to edit the requested resource.")
     return decorated_function
