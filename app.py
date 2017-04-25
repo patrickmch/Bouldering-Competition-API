@@ -1,6 +1,7 @@
 from setup import *
 from crud import *
-from authenticate_user import *
+from handle_request import *
+from user import User
 
 app = Flask(__name__)
 login_manager.init_app(app)
@@ -14,32 +15,32 @@ def url_string(func_to_call):
 
 #url rules
 @app.route(url_string('create_doc'), methods= generic_methods)
-@filter_request
+@handle_request
 def create(**kwargs):
     new_doc = Crud(**kwargs)
     return new_doc.create_doc()
 
 @app.route('/api/create_user/', methods= generic_methods)
-@filter_request
+@handle_request
 def create_user(request):
     # pass only the request object as the rest of the kwargs default to a new user
     new_user = Crud(request = request)
     return new_user.create_doc()
 
 @app.route(url_string('find_doc'), methods= generic_methods)
-@filter_request
+@handle_request
 def read(**kwargs):
     new_search = Crud(**kwargs)
     return new_search.find_doc()
 
 @app.route(url_string('update_doc'), methods= generic_methods)
-@filter_request
+@handle_request
 def update(**kwargs):
     update = Crud(**kwargs)
     return update.update_doc()
 
 @app.route(url_string('delete_doc'), methods= generic_methods)
-@filter_request
+@handle_request
 def delete(**kwargs):
     delete = Crud(**kwargs)
     return delete.delete_doc()
