@@ -1,19 +1,22 @@
 # boilerplate and imports
 from flask import Flask, jsonify, request, abort, make_response, url_for
-import bson
-import pymongo
+from functools import wraps
+from datetime import datetime
 from pprint import pprint
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+from flask_login import LoginManager
+import bson
+import pymongo
 import logging
 import pprint
 import json
 import inspect
 import ast
-from functools import wraps
-from datetime import datetime
+
 
 # database and colllection setup
+login_manager = LoginManager()
 client = MongoClient()
 db = client.test
 participants = db.participants

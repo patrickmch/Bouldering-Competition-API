@@ -3,6 +3,7 @@ from crud import *
 from authenticate_user import *
 
 app = Flask(__name__)
+login_manager.init_app(app)
 
 # create variable/function with generic info to keep the code DRY
 # all urls take function to call, and (with the exception of create_user) take an id (used as api_key) and the
