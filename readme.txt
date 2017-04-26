@@ -23,7 +23,7 @@ Collection Schema:
 -competitions
   name, participant_ids, venue_ids
     -routes
-      name, grade, points
+      _id, name, grade, points
 
 
 To Do:
@@ -31,5 +31,5 @@ To Do:
 -have other user validate send
 -function to pull down results for the comp
 -create user password field w/encryption
-  +use flask user authentication
--use flask validation
+  +use flask user authentication?
+-use flask validation ?

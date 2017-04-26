@@ -5,7 +5,7 @@ from user import User
 
 app = Flask(__name__)
 login_manager.init_app(app)
-
+app.secret_key = '\xec0\xea\xccD\xd3\x03\x87\xf4K1A\xeb?$*\x0cN\xb5I\xf1\x02\xb3\x13'
 # create variable/function with generic info to keep the code DRY
 # all urls take function to call, and (with the exception of create_user) take an id (used as api_key) and the
 # collection_name of collection to be modified
@@ -14,6 +14,11 @@ def url_string(func_to_call):
     return '/api/%s/<string:id>/<string:collection_name>/' % func_to_call
 
 #url rules
+@app.route('/api/login/', methods = generic_methods)
+def login():
+    return "test"
+
+
 @app.route(url_string('create_doc'), methods= generic_methods)
 @handle_request
 def create(**kwargs):

@@ -2,6 +2,7 @@ from setup import *
 class Crud:
     def __init__(self, **kwargs):
         # defaults below are for a new user
+        # TODO use the User class here
         self.collection_name = kwargs.get("collection_name", "participants")
         self.collection = db[self.collection_name]
         self.request = kwargs.get("request")
@@ -21,6 +22,8 @@ class Crud:
                 return "The email you provided is already in use."
             #create new datetime object for easier querying
             self.request["birthday"] = datetime.strptime(request["birthday"], "%d/%m/%Y")
+            # encrypt password
+            self.request["password"] = pwd_context.hash(self.request["password"])
         elif self.collection == db.competitions:
             request["comp_date"] = datetime.strptime(request["comp_date"], "%d/%m/%Y")
             #add a venue id to the competitions to enforce a relationship between the two collections

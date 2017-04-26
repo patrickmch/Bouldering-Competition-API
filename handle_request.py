@@ -19,6 +19,10 @@ authorization = {
     }
 }
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+
 def handle_request(view_function):
     @wraps(view_function)
     def decorated_function(**kwargs):
@@ -30,9 +34,10 @@ def handle_request(view_function):
             return view_function(req)
         user = User(db.participants.find_one({"_id" : ObjectId(kwargs.get("id"))}))
         collection_name = kwargs.get("collection_name")
+        return str(user.get_id())
         if user.can_edit_request(req["_id"], collection_name, authorization):
             return view_function(collection_name = collection_name, user = user, request = request)
         else:
             #user not authenticated
-            abort(403, "We could not verify that you have permission to edit the requested resource.")
+            abort(403, "You do not have permission to edit the requested resource.")
     return decorated_function

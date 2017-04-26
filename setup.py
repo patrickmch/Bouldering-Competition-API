@@ -1,11 +1,12 @@
 # boilerplate and imports
-from flask import Flask, jsonify, request, abort, make_response, url_for
+from flask import Flask, jsonify, request, abort, make_response, url_for, session
 from functools import wraps
 from datetime import datetime
 from pprint import pprint
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from flask_login import LoginManager
+from passlib.context import CryptContext
 import bson
 import pymongo
 import logging
@@ -22,6 +23,8 @@ db = client.test
 participants = db.participants
 venues = db.venues
 competitions = db.competitions
+# passlib; documentation at https://passlib.readthedocs.io/en/stable/narr/quickstart.html
+pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 # function to validate collection information
 
