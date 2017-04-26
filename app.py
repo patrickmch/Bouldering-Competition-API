@@ -14,9 +14,13 @@ def url_string(func_to_call):
     return '/api/%s/<string:id>/<string:collection_name>/' % func_to_call
 
 #url rules
-@app.route('/api/login/', methods = generic_methods)
-def login():
-    return "test"
+#TODO add pword encryption to the request here (here is a starting place: http://stackoverflow.com/questions/19514538/how-to-send-password-to-rest-service-securely)
+@app.route('/api/login/<string:email>/<string:password>', methods = generic_methods)
+def login(email, password):
+    user = participants.find_one({"email" : email})
+    check = pwd_context.verify(password, user["password"])
+    return str(check)
+    # return "test %s %s" % (email, password)
 
 
 @app.route(url_string('create_doc'), methods= generic_methods)

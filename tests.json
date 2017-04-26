@@ -17,7 +17,7 @@
   "email" : "asd@test.com",
   "role" : "admin"
 }
-
+// admin with password: 59011660e75ab51f4908829c
 //update
 [
 	{"_id" : "58f380a5e75ab5244ff358ef"},
