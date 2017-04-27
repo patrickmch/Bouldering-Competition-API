@@ -13,13 +13,21 @@ generic_methods = ['GET', 'POST']
 def url_string(func_to_call):
     return '/api/%s/<string:id>/<string:collection_name>/' % func_to_call
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+
 #url rules
 #TODO add pword encryption to the request here (here is a starting place: http://stackoverflow.com/questions/19514538/how-to-send-password-to-rest-service-securely)
 @app.route('/api/login/<string:email>/<string:password>', methods = generic_methods)
 def login(email, password):
-    user = participants.find_one({"email" : email})
-    check = pwd_context.verify(password, user["password"])
-    return str(check)
+    user_data = participants.find_one({"email" : email})
+    if pwd_encrypt.verify(password, user_data["password"]):
+        user = User(user_data)
+        login_user(user)
+        return str(user.get_id())
+    else:
+        return "incorrect password for email %s" % email
     # return "test %s %s" % (email, password)
 
 
