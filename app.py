@@ -27,7 +27,7 @@ def login():
         login_user(user)
         return str(user.get_id())
     else:
-        return "incorrect password for email %s" % email
+        return "incorrect password for email %s" % req["username"]
 
 
 @app.route(url_string('create_doc'), methods= generic_methods)
