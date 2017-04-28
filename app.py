@@ -18,17 +18,16 @@ def load_user(user_id):
     return User.get(user_id)
 
 #url rules
-#TODO add pword encryption to the request here (here is a starting place: http://stackoverflow.com/questions/19514538/how-to-send-password-to-rest-service-securely)
-@app.route('/api/login/<string:email>/<string:password>', methods = generic_methods)
-def login(email, password):
-    user_data = participants.find_one({"email" : email})
-    if pwd_encrypt.verify(password, user_data["password"]):
+@app.route('/api/login/', methods = generic_methods)
+def login():
+    req = request.authorization
+    user_data = participants.find_one({"email" : req["username"]})
+    if pwd_encrypt.verify(req["password"], user_data["password"]):
         user = User(user_data)
         login_user(user)
         return str(user.get_id())
     else:
         return "incorrect password for email %s" % email
-    # return "test %s %s" % (email, password)
 
 
 @app.route(url_string('create_doc'), methods= generic_methods)
