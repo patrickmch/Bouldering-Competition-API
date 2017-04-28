@@ -5,7 +5,7 @@ from datetime import datetime
 from pprint import pprint
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, login_required, logout_user
 from passlib.context import CryptContext
 import flask_login
 import bson
