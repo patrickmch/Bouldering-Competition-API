@@ -27,7 +27,7 @@ competitions = db.competitions
 # passlib; documentation at https://passlib.readthedocs.io/en/stable/narr/quickstart.html
 pwd_encrypt = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
-# this dict determines user roles 
+# this dict determines user roles
 authorization = {
     'participants': {
         'participant': False,
@@ -46,8 +46,11 @@ authorization = {
     }
 }
 
-# function to validate collection information
+# function for easier debugging
+def debug(var):
+    return str(var)
 
+# function to validate collection information
 def collection_validation(collection_name, validation_dict, validation_level):
     # convert python dict to sorted dict type using bson's SON method: first item in the list is the command we want to use with the collection name; next is the validation dictionary; next is the validation level
     validator = bson.son.SON([("collMod", collection_name),
