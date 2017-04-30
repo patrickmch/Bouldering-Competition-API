@@ -31,5 +31,5 @@ To Do:
 -have other user validate send
 -function to pull down results for the comp
 -create user password field w/encryption
-  +use flask user authentication?
 -use flask validation ?
+-add api versioning

@@ -36,6 +36,11 @@ def logout():
     logout_user()
     return "logged out"
 
+@app.route('/api/test_login/', methods = generic_methods)
+@login_required
+def test_login():
+    return "logged in %s" % str(current_user.get_var("_id"))
+    # 59011660e75ab51f4908829c
 
 @app.route(url_string('create_doc'), methods= generic_methods)
 @handle_request
@@ -57,6 +62,7 @@ def read(**kwargs):
     return new_search.find_doc()
 
 @app.route(url_string('update_doc'), methods= generic_methods)
+@login_required
 @handle_request
 def update(**kwargs):
     update = Crud(**kwargs)

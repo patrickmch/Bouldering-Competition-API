@@ -5,7 +5,7 @@ from datetime import datetime
 from pprint import pprint
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from passlib.context import CryptContext
 import flask_login
 import bson
@@ -26,6 +26,25 @@ venues = db.venues
 competitions = db.competitions
 # passlib; documentation at https://passlib.readthedocs.io/en/stable/narr/quickstart.html
 pwd_encrypt = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
+
+# this dict determines user roles 
+authorization = {
+    'participants': {
+        'participant': False,
+        'judge' : True,
+        'admin': True
+    },
+    'competitions': {
+        'participant' : False,
+        'judge' : True,
+        'admin': True
+    },
+    'venue' : {
+        'participant' : False,
+        'judge' : False,
+        'admin' : True
+    }
+}
 
 # function to validate collection information
 
