@@ -2,6 +2,7 @@ from setup import *
 from crud import *
 from handle_request import *
 from user import User
+from user_api import UserAPI
 
 app = Flask(__name__)
 login_manager.init_app(app)
@@ -36,40 +37,23 @@ def logout():
     logout_user()
     return "logged out"
 
-@app.route('/api/test_login/', methods = generic_methods)
-@login_required
-def test_login():
-    return "logged in %s" % str(current_user.get_var("_id"))
-    # 59011660e75ab51f4908829c
 
-@app.route(url_string('create_doc'), methods= generic_methods)
-@handle_request
-def create(**kwargs):
-    new_doc = Crud(**kwargs)
-    return new_doc.create_doc()
+app.add_url_rule('/api/users/', view_func = UserAPI.as_view('users'), methods= ['GET',])
+# @app.route('api/users/', view_func = UserAPI.as_view('users'), methods= ['GET',])
+# @handle_request
+# def read(**kwargs):
+#     new_search = Crud(**kwargs)
+#     return new_search.find_doc()
 
-@app.route('/api/create_user/', methods= generic_methods)
-@handle_request
-def create_user(request):
-    # pass only the request object as the rest of the kwargs default to a new user
-    new_user = Crud(request = request)
-    return new_user.create_doc()
-
-@app.route(url_string('find_doc'), methods= generic_methods)
-@handle_request
-def read(**kwargs):
-    new_search = Crud(**kwargs)
-    return new_search.find_doc()
-
-@app.route(url_string('update_doc'), methods= generic_methods)
-@login_required
-@handle_request
-def update(**kwargs):
-    update = Crud(**kwargs)
-    return update.update_doc()
-
-@app.route(url_string('delete_doc'), methods= generic_methods)
-@handle_request
-def delete(**kwargs):
-    delete = Crud(**kwargs)
-    return delete.delete_doc()
+# @app.route(url_string('update_doc'), methods= generic_methods)
+# @login_required
+# @handle_request
+# def update(**kwargs):
+#     update = Crud(**kwargs)
+#     return update.update_doc()
+#
+# @app.route(url_string('delete_doc'), methods= generic_methods)
+# @handle_request
+# def delete(**kwargs):
+#     delete = Crud(**kwargs)
+#     return delete.delete_doc()

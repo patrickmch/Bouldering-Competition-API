@@ -1,8 +1,7 @@
 from setup import *
 class Crud:
     def __init__(self, **kwargs):
-        self.collection_name = kwargs.get("collection_name", "participants")
-        self.collection = db[self.collection_name]
+        self.collection = collection
         self.request = kwargs.get("request")
 
     def find_doc(self):
@@ -25,7 +24,7 @@ class Crud:
         try:
             result = self.collection.update_one(request[0], request[1], False)
         except KeyError as error:
-            return "A KeyError was raised. Please make sure that you are using the \'_id\' key for all updates, and that the key for the field \'%s\' exists in the \'%s\' collection." % (request[1]['$set'].keys()[0], self.collection_name)
+            return "A KeyError was raised. Please make sure that you are using the \'_id\' key for all updates, and that the key for the field \'%s\' exists." % request[1]['$set'].keys()[0]
         except bson.errors.InvalidId as error:
             return "Invalid id"
         else:
