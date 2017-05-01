@@ -30,6 +30,7 @@ To Do:
 -address fields have separate street, zip, etc
 -have other user validate send
 -function to pull down results for the comp
--create user password field w/encryption
--use flask validation ?
+-validate user/password field
 -add api versioning
+-everything should be returned to the client as JSON
+-refactor application

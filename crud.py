@@ -1,8 +1,6 @@
 from setup import *
 class Crud:
     def __init__(self, **kwargs):
-        # defaults below are for a new user
-        # TODO use the User class here
         self.collection_name = kwargs.get("collection_name", "participants")
         self.collection = db[self.collection_name]
         self.request = kwargs.get("request")
@@ -13,27 +11,18 @@ class Crud:
         return str(info)
 
     def create_doc(self):
+
         request = self.request
-        #TODO broken?
-        if self.user == "new_user":
-            # if new_user check email to make sure it is not a duplicate account
-            query = self.collection.find({"email" : request["email"]})
-            if query.count() > 0:
-                return "The email you provided is already in use."
-            #create new datetime object for easier querying
-            self.request["birthday"] = datetime.strptime(request["birthday"], "%d/%m/%Y")
-            # encrypt password
-            self.request["password"] = pwd_encrypt.hash(self.request["password"])
-        elif self.collection == db.competitions:
-            request["comp_date"] = datetime.strptime(request["comp_date"], "%d/%m/%Y")
-            #add a venue id to the competitions to enforce a relationship between the two collections
-            request["venue_id"] = ObjectId(request["venue_id"])
+        # elif self.collection == db.competitions:
+        #     request["comp_date"] = datetime.strptime(request["comp_date"], "%d/%m/%Y")
+        #     #add a venue id to the competitions to enforce a relationship between the two collections
+        #     request["venue_id"] = ObjectId(request["venue_id"])
         try:
             new_id = self.collection.insert_one(request).inserted_id
         except pymongo.errors.WriteError as error:
             #more detailed exceptions (eg. what fields were not filled out) are not possible with current Mongo validation
             logging.error(error)
-            return "Failed to create a participant as one or more required fields were missing or incomplete"
+            return "Failed to insert the requested data in to the database as one or more fields was missing or incomplete"
         else:
             return "success %s" % str(new_id)
 
