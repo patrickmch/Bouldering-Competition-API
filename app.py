@@ -38,22 +38,6 @@ def logout():
     return "logged out"
 
 
-app.add_url_rule('/api/users/', view_func = UserAPI.as_view('users'), methods= ['GET',])
-# @app.route('api/users/', view_func = UserAPI.as_view('users'), methods= ['GET',])
-# @handle_request
-# def read(**kwargs):
-#     new_search = Crud(**kwargs)
-#     return new_search.find_doc()
-
-# @app.route(url_string('update_doc'), methods= generic_methods)
-# @login_required
-# @handle_request
-# def update(**kwargs):
-#     update = Crud(**kwargs)
-#     return update.update_doc()
-#
-# @app.route(url_string('delete_doc'), methods= generic_methods)
-# @handle_request
-# def delete(**kwargs):
-#     delete = Crud(**kwargs)
-#     return delete.delete_doc()
+app.add_url_rule('/api/users/', view_func = login_required(UserAPI.as_view('users')), methods= ['GET', 'POST', 'PUT', 'DELETE'])
+app.add_url_rule('/api/competitions/', view_func = login_required(UserAPI.as_view('competitions')), methods= ['GET', 'POST', 'PUT', 'DELETE'])
+app.add_url_rule('/api/venues/', view_func = login_required(UserAPI.as_view('venues')), methods= ['GET', 'POST', 'PUT', 'DELETE'])
