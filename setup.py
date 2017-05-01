@@ -47,8 +47,12 @@ authorization = {
 }
 
 # function for easier debugging
-def debug(var):
-    return str(var)
+def debug(*args, **kwargs):
+    if kwargs != {}:
+        x = {k:v for k, v in kwargs.iteritems()}
+    else:
+        x = args
+    return str(x)
 
 # function to validate collection information
 def collection_validation(collection_name, validation_dict, validation_level):

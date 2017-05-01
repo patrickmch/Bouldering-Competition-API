@@ -6,7 +6,6 @@ class Crud:
         self.collection_name = kwargs.get("collection_name", "participants")
         self.collection = db[self.collection_name]
         self.request = kwargs.get("request")
-        self._id = kwargs.get("_id", 0)
         self.user = kwargs.get("user", "new_user")
 
     def find_doc(self):
@@ -15,7 +14,8 @@ class Crud:
 
     def create_doc(self):
         request = self.request
-        if self._id == 0:
+        #TODO broken?
+        if self.user == "new_user":
             # if new_user check email to make sure it is not a duplicate account
             query = self.collection.find({"email" : request["email"]})
             if query.count() > 0:
@@ -40,7 +40,6 @@ class Crud:
     def update_doc(self):
         request = self.request
         try:
-            request[0]["_id"] = self._id
             result = self.collection.update_one(request[0], request[1], False)
         except KeyError as error:
             return "A KeyError was raised. Please make sure that you are using the \'_id\' key for all updates, and that the key for the field \'%s\' exists in the \'%s\' collection." % (request[1]['$set'].keys()[0], self.collection_name)
