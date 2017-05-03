@@ -15,7 +15,7 @@ class User:
         return False
 
     def get_id(self):
-        return unicode(self.vars.get("_id"))
+        return unicode(self.vars.get('_id'))
 
     def is_authenticated(self):
         return True
