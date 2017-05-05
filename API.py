@@ -5,6 +5,24 @@ MethodView = views.MethodView
 
 class API(MethodView):
 
+    # this dict determines user roles
+    authorization = {
+        'participants': {
+            'participant': False,
+            'judge' : True,
+            'admin': True
+        },
+        'competitions': {
+            'participant' : False,
+            'judge' : True,
+            'admin': True
+        },
+        'venue' : {
+            'participant' : False,
+            'judge' : False,
+            'admin' : True
+        }
+    }
 
     # check if the user is sending data they are authorized to edit
     def can_edit_request(self):

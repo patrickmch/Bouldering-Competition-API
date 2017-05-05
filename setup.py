@@ -21,30 +21,9 @@ import ast
 login_manager = LoginManager()
 client = MongoClient()
 db = client.test
-participants = db.participants
-venues = db.venues
-competitions = db.competitions
 # passlib; documentation at https://passlib.readthedocs.io/en/stable/narr/quickstart.html
 pwd_encrypt = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
-# this dict determines user roles
-authorization = {
-    'participants': {
-        'participant': False,
-        'judge' : True,
-        'admin': True
-    },
-    'competitions': {
-        'participant' : False,
-        'judge' : True,
-        'admin': True
-    },
-    'venue' : {
-        'participant' : False,
-        'judge' : False,
-        'admin' : True
-    }
-}
 
 # function for easier debugging
 def debug(*args, **kwargs):
