@@ -1,17 +1,16 @@
 from setup import *
 class Crud:
-    def __init__(self, **kwargs):
+    def __init__(self, collection):
         self.collection = collection
-        self.request = kwargs.get("request")
 
-    def find_doc(self):
+    def find_doc(self, req_id):
         info = self.collection.find_one(ObjectId(self._id))
         return str(info)
 
-    def create_doc(self):
-        request = self.request
+    def create_doc(self, req):
         try:
-            new_id = self.collection.insert_one(request).inserted_id
+            return str(req.get_req())
+            new_id = self.collection.insert_one(req.get_req()).inserted_id
         except pymongo.errors.WriteError as error:
             #more detailed exceptions (eg. what fields were not filled out) are not possible with current Mongo validation
             logging.error(error)
@@ -19,7 +18,7 @@ class Crud:
         else:
             return "success %s" % str(new_id)
 
-    def update_doc(self):
+    def update_doc(self, req):
         request = self.request
         try:
             result = self.collection.update_one(request[0], request[1], False)
@@ -35,7 +34,7 @@ class Crud:
             else:
                 return  "%s record was successfully updated" % str(result.matched_count)
 
-    def delete_doc(self):
+    def delete_doc(self, req_id):
         try:
             result = self.collection.delete_one({"_id" : ObjectId(self.request["_id"])})
         except:
