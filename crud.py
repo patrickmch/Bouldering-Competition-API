@@ -9,7 +9,6 @@ class Crud:
 
     def create_doc(self, req):
         try:
-            return str(req.get_req())
             new_id = self.collection.insert_one(req.get_req()).inserted_id
         except pymongo.errors.WriteError as error:
             #more detailed exceptions (eg. what fields were not filled out) are not possible with current Mongo validation
