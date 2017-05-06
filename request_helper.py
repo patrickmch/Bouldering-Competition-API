@@ -2,10 +2,14 @@ from setup import *
 
 class RequestHelper:
 
-    def __init__(self, collection):
-        self.collection = collection
+    def __init__(self):
+        self.collection_name = request.path.split('/')[2]
+        self.collection = db[self.collection_name]
         self.req = request.get_json()
         self.req_id = self.set_req_id()
+
+    def get_collection(self):
+        return self.collection
 
     def get_req(self):
         return self.req

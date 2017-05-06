@@ -1,7 +1,8 @@
 from setup import *
 class Crud:
-    def __init__(self, collection):
-        self.collection = collection
+    def __init__(self, req):
+        self.req = req
+        self.collection = self.req.get_collection()
 
     def find_doc(self, req_id):
         info = self.collection.find_one(ObjectId(self._id))

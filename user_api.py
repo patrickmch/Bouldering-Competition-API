@@ -6,10 +6,9 @@ from request_helper import RequestHelper
 class UserAPI(API):
 
     def __init__(self):
-        self.collection_name = 'participants'
-        self.collection = db[self.collection_name]
-        self.req = RequestHelper(self.collection)
-        self.crud = Crud(self.collection)
+        self.req = RequestHelper()
+        self.crud = Crud(self.req)
+        self.collection = self.req.get_collection()
 
     # create new user:
     def post(self):
