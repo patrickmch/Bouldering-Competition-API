@@ -3,6 +3,7 @@ from crud import *
 from user import User
 from user_api import UserAPI
 from user_auth import UserAuth
+from request_helper import RequestHelper
 
 app = Flask(__name__)
 login_manager.init_app(app)
@@ -12,6 +13,7 @@ all_methods = ['GET', 'POST', 'PUT', 'DELETE']
 @login_manager.user_loader
 def load_user(user_id):
     user = User(db.participants.find_one({'_id' : ObjectId(user_id)}))
+    g.req = RequestHelper()
     ua = UserAuth(user)
     ua.authenticate_user()
     return user

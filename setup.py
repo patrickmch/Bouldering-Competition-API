@@ -1,5 +1,5 @@
 # boilerplate and imports
-from flask import Flask, jsonify, request, abort, make_response, url_for, session, views
+from flask import Flask, jsonify, request, abort, make_response, url_for, session, views, g
 from functools import wraps
 from datetime import datetime
 from pprint import pprint
