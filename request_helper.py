@@ -7,6 +7,16 @@ class RequestHelper:
         self.collection = db[self.collection_name]
         self.req = request.get_json()
         self.req_id = self.set_req_id()
+        self.auth = request.authorization
+
+    def get_collection_name(self):
+        return self.collection_name
+
+    def api_key(self):
+        return request.headers['Api-Key']
+
+    def auth(self):
+        return self.auth
 
     def get_collection(self):
         return self.collection

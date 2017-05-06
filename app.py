@@ -9,12 +9,20 @@ login_manager.init_app(app)
 app.secret_key = '\xec0\xea\xccD\xd3\x03\x87\xf4K1A\xeb?$*\x0cN\xb5I\xf1\x02\xb3\x13'
 all_methods = ['GET', 'POST', 'PUT', 'DELETE']
 
+@login_manager.user_loader
+def load_user(user_id):
+    user = User(db.participants.find_one({'_id' : ObjectId(user_id)}))
+    ua = UserAuth(user)
+    ua.authenticate_user()
+    return user
+
 #url rules
 app.add_url_rule('/api/logout/', 'logout', UserAuth.logout)
 app.add_url_rule('/api/login/', 'login', UserAuth.login)
 
 # POST creates a user and therefore does not require login:
-app.add_url_rule('/api/participants/', view_func = UserAPI.as_view('new_user'), methods= ['POST'])
+#TODO make sure login is not required HERE
+app.add_url_rule('/api/participants/', view_func = login_required(UserAPI.as_view('new_user')), methods= ['POST'])
 # all other methods require login:
 app.add_url_rule('/api/participants/', view_func = login_required(UserAPI.as_view('users')), methods= ['GET', 'PUT', 'DELETE'])
 app.add_url_rule('/api/competitions/', view_func = login_required(UserAPI.as_view('competitions')), methods= all_methods)

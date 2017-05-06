@@ -4,9 +4,10 @@ from request_helper import RequestHelper
 
 class UserAuth:
 
-    def __init__(self):
+    def __init__(self, user):
         self.req = RequestHelper()
-        self.auth = request.authorization
+        self.api_key = self.req.api_key()
+        self.user = user
 
     # this dict determines user roles
     user_authorization = {
@@ -29,16 +30,18 @@ class UserAuth:
 
     # check if the user is sending data they are authorized to edit
     def can_edit_request(self):
-        if current_user.get_var('_id') == self.req.get_req_id():
+        if self.user.get_var('_id') == self.req.get_req_id():
             # user is editing themself - always authorized
             return True
         else:
             #use the collection name and user role to determine if user is authorized to modify a collection
             #based on values stored in a dictionary
-            return authorization[self.collection_name][current_user.get_var('role')]
+            return self.user_authorization[self.req.get_collection_name()][self.user.get_var('role')]
 
-    def handle_request(self):
-        if not self.can_edit_request():
+    def authenticate_user(self):
+        if self.api_key != self.user.get_id():
+            abort(401, 'You did not provide valid login credentials')
+        elif not self.can_edit_request():
             #user not authenticated
             abort(403, 'You do not have permission to access the requested resource.')
 
@@ -56,9 +59,3 @@ class UserAuth:
     def logout():
         logout_user()
         return 'logged out'
-
-    @staticmethod
-    @login_manager.user_loader
-    def load_user(user_id):
-        user = User(participants.find_one({'_id' : ObjectId(user_id)}))
-        return user
