@@ -39,7 +39,7 @@ class Crud:
         except:
             raise
         else:
-            #TODO do not reveal id if it is a user id 
+            #TODO do not reveal id if it is a user id
             if result.deleted_count < 1:
                 return "No records were deleted with id %s" % g.req.get_id()
             else:

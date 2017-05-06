@@ -18,9 +18,13 @@ def load_user(user_id):
     ua.authenticate_user()
     return user
 
-# def instantiate_req(function):
-#     g.req = RequestHelper()
-#     return function
+def instantiate_req(func):
+    def decorated():
+        if request.path == '/api/participants/':
+            g.req = RequestHelper()
+            return func()
+    return decorated
+
 
 #url rules
 app.add_url_rule('/api/logout/', 'logout', UserAuth.logout)
