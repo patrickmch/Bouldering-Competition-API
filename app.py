@@ -18,13 +18,16 @@ def load_user(user_id):
     ua.authenticate_user()
     return user
 
+# def instantiate_req(function):
+#     g.req = RequestHelper()
+#     return function
+
 #url rules
 app.add_url_rule('/api/logout/', 'logout', UserAuth.logout)
 app.add_url_rule('/api/login/', 'login', UserAuth.login)
 
 # POST creates a user and therefore does not require login:
-#TODO make sure login is not required HERE
-app.add_url_rule('/api/participants/', view_func = login_required(UserAPI.as_view('new_user')), methods= ['POST'])
+app.add_url_rule('/api/participants/', view_func = instantiate_req(UserAPI.as_view('new_user')), methods= ['POST'])
 # all other methods require login:
 app.add_url_rule('/api/participants/', view_func = login_required(UserAPI.as_view('users')), methods= ['GET', 'PUT', 'DELETE'])
 app.add_url_rule('/api/competitions/', view_func = login_required(UserAPI.as_view('competitions')), methods= all_methods)

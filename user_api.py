@@ -1,13 +1,11 @@
 from crud import *
 from setup import *
 from API import API
-from request_helper import RequestHelper
 
 class UserAPI(API):
 
     def __init__(self):
-        self.crud = Crud()
-        self.collection = g.req.get_collection()
+        super(UserAPI, self).__init__()
 
     # create new user:
     def post(self):
