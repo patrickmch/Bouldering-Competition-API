@@ -13,17 +13,17 @@ all_methods = ['GET', 'POST', 'PUT', 'DELETE']
 @login_manager.user_loader
 def load_user(user_id):
     user = User(db.participants.find_one({'_id' : ObjectId(user_id)}))
-    g.req = RequestHelper()
+    #use the user_auth class to authenticate the user
     ua = UserAuth(user)
     ua.authenticate_user()
     return user
 
 def instantiate_req(func):
-    def decorated():
-        if request.path == '/api/participants/':
-            g.req = RequestHelper()
-            return func()
-    return decorated
+    # wraps response function so as to instantiate the RequestHelper class
+    def wrapper():
+        g.req = RequestHelper()
+        return func()
+    return wrapper
 
 
 #url rules
@@ -33,6 +33,6 @@ app.add_url_rule('/api/login/', 'login', UserAuth.login)
 # POST creates a user and therefore does not require login:
 app.add_url_rule('/api/participants/', view_func = instantiate_req(UserAPI.as_view('new_user')), methods= ['POST'])
 # all other methods require login:
-app.add_url_rule('/api/participants/', view_func = login_required(UserAPI.as_view('users')), methods= ['GET', 'PUT', 'DELETE'])
-app.add_url_rule('/api/competitions/', view_func = login_required(UserAPI.as_view('competitions')), methods= all_methods)
-app.add_url_rule('/api/venues/', view_func = login_required(UserAPI.as_view('venues')), methods= all_methods)
+app.add_url_rule('/api/participants/', view_func = instantiate_req(login_required(UserAPI.as_view('users'))), methods= ['GET', 'PUT', 'DELETE'])
+app.add_url_rule('/api/competitions/', view_func = instantiate_req(login_required(UserAPI.as_view('competitions'))), methods= all_methods)
+app.add_url_rule('/api/venues/', view_func = instantiate_req(login_required(UserAPI.as_view('venues'))), methods= all_methods)
