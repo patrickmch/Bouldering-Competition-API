@@ -9,13 +9,6 @@ Example:
 Note that the first key value pair in the list is the command to run (collMod) followed by the collection name (test_collection in this case), the second is the validation rules we want to enforce, and the third is the validation level. Note also that if the collection does not exist, Pymongo will throw an error.
 
 
-_______notes_________
-so the problem is that you're trying to enforce a structure that isn't going to work:
-the whole benefit of the http verbs structure is that it allows for different use cases. you're trying to avoid passing variables to each of the different classes, when in fact if you instantiate with the bare minimum and pass variables from
-there you'll have cleaner code. this won't require a huge refactor... try to make all the crazy cases in the http verb
-functions and keep all the rest of the code generic.
-
-
 
 Collection Schema:
 
@@ -39,13 +32,11 @@ When the classes' methods are called they will do any necessary processing (at l
 
 
 To Do:
-1)
--update and improve RequestHelper and general application flow
--test all current api functions
-
-2)
+-test
+-clean up imports
 -address fields have separate street, zip, etc
 -have other user validate send
 -function to pull down results for the comp
 -add api versioning
 -everything should be returned to the client as JSON
+-should login use the RequestHelper?

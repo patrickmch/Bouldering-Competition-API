@@ -25,14 +25,6 @@ db = client.test
 pwd_encrypt = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 
-# function for easier debugging
-def debug(*args, **kwargs):
-    if kwargs != {}:
-        x = {k:v for k, v in kwargs.iteritems()}
-    else:
-        x = args
-    return str(x)
-
 # function to validate collection information
 def collection_validation(collection_name, validation_dict, validation_level):
     # convert python dict to sorted dict type using bson's SON method: first item in the list is the command we want to use with the collection name; next is the validation dictionary; next is the validation level

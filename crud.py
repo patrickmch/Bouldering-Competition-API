@@ -9,7 +9,7 @@ class Crud:
 
     def create_doc(self):
         try:
-            new_id = self.collection.insert_one(g.req.get_req()).inserted_id
+            new_id = self.collection.insert_one(g.req.get_request()).inserted_id
         except pymongo.errors.WriteError as error:
             #more detailed exceptions (eg. what fields were not filled out) are not possible with current Mongo validation
             logging.error(error)
@@ -18,7 +18,7 @@ class Crud:
             return "success %s" % str(new_id)
 
     def update_doc(self):
-        insert = g.req.get_req()
+        insert = g.req.get_request()
         try:
             result = self.collection.update_one(insert[0], insert[1], False)
         except KeyError as error:
@@ -33,14 +33,10 @@ class Crud:
             else:
                 return  "%s record was successfully updated" % str(result.matched_count)
 
-    def delete_doc(self, req_id):
-        try:
-            result = self.collection.delete_one({"_id" : ObjectId(g.req.get_id())})
-        except:
-            raise
+    def delete_doc(self):
+        result = self.collection.delete_one({"_id" : ObjectId(g.req.get_id())})
+        #TODO do not reveal id if it is a user id
+        if result.deleted_count < 1:
+            return "No records were deleted with id %s" % g.req.get_id()
         else:
-            #TODO do not reveal id if it is a user id
-            if result.deleted_count < 1:
-                return "No records were deleted with id %s" % g.req.get_id()
-            else:
-                return "%s record with the id %s was deleted successfully" % (str(result.deleted_count), g.req.get_id())
+            return "%s record with the id %s was deleted successfully" % (str(result.deleted_count), g.req.get_id())
