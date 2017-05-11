@@ -39,10 +39,14 @@ When the classes' methods are called they will do any necessary processing (at l
 
 
 To Do:
+1)
+-make sure api key is passed when user makes request
+-create venue api class
+-test all current api functions
+
+2)
 -address fields have separate street, zip, etc
 -have other user validate send
 -function to pull down results for the comp
--validate user/password field
 -add api versioning
 -everything should be returned to the client as JSON
--refactor application

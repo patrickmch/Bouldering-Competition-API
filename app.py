@@ -26,7 +26,7 @@ def instantiate_req(func):
     return wrapper
 
 
-#url rules
+#url rules:
 app.add_url_rule('/api/logout/', 'logout', UserAuth.logout)
 app.add_url_rule('/api/login/', 'login', UserAuth.login)
 
