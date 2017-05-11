@@ -11,12 +11,12 @@ class UserAPI(API):
     def post(self):
         req = g.req
         # check email to make sure it is not a duplicate account
-        req_email = req.get_req_item("email")
-        query = self.collection.find({"email" : req_email})
+        req_email = req.get_item('email')
+        query = self.collection.find({'email' : req_email})
         if query.count() > 0:
-            return "The email you provided is already in use."
+            return 'The email you provided is already in use.'
         #create new datetime object for easier querying
-        req.set_date("birthday")
+        req.set_date('birthday')
         # encrypt password
-        req.set_req("password", pwd_encrypt.hash(req.get_req_item("password")))
+        req.set_item('password', pwd_encrypt.hash(req.get_item('password')))
         return self.crud.create_doc()

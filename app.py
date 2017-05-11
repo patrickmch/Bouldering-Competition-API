@@ -2,6 +2,8 @@ from setup import *
 from crud import *
 from user import User
 from user_api import UserAPI
+from competitions_api import CompAPI
+from venues_api import VenueAPI
 from user_auth import UserAuth
 from request_helper import RequestHelper
 
@@ -34,5 +36,5 @@ app.add_url_rule('/api/login/', 'login', UserAuth.login)
 app.add_url_rule('/api/participants/', view_func = instantiate_req(UserAPI.as_view('new_user')), methods= ['POST'])
 # all other methods require login:
 app.add_url_rule('/api/participants/', view_func = instantiate_req(login_required(UserAPI.as_view('users'))), methods= ['GET', 'PUT', 'DELETE'])
-app.add_url_rule('/api/competitions/', view_func = instantiate_req(login_required(UserAPI.as_view('competitions'))), methods= all_methods)
-app.add_url_rule('/api/venues/', view_func = instantiate_req(login_required(UserAPI.as_view('venues'))), methods= all_methods)
+app.add_url_rule('/api/competitions/', view_func = instantiate_req(login_required(CompAPI.as_view('competitions'))), methods= all_methods)
+app.add_url_rule('/api/venues/', view_func = instantiate_req(login_required(VenueAPI.as_view('venues'))), methods= all_methods)

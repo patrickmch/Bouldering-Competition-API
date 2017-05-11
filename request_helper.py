@@ -24,7 +24,7 @@ class RequestHelper:
     def get_req(self):
         return self.req
 
-    def get_req_item(self, item):
+    def get_item(self, item):
         try:
             return self.req[item]
         except:
@@ -33,12 +33,12 @@ class RequestHelper:
     def get_req_id(self):
         return self.req_id
 
-    def set_req(self, key, val):
+    def set_item(self, key, val):
         self.req[key] = val
-        return 'successfully set \'%s\' to \'%s\'.' % (key, val)
+        return True
 
     def set_date(self, field_name):
-        self.set_req(field_name, datetime.strptime(self.get_req_item(field_name), "%d/%m/%Y"))
+        self.set_item(field_name, datetime.strptime(self.get_item(field_name), "%d/%m/%Y"))
 
     def set_req_id(self):
         default = 0

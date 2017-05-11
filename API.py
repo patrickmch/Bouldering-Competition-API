@@ -18,6 +18,5 @@ class API(MethodView):
     def delete(self):
         return crud.delete_doc()
 
-    #TODO redo here (no need for user_id)
     def put(self, user_id):
         return crud.update_doc()

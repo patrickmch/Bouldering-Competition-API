@@ -40,8 +40,7 @@ When the classes' methods are called they will do any necessary processing (at l
 
 To Do:
 1)
--make sure api key is passed when user makes request
--create venue api class
+-update and improve RequestHelper and general application flow
 -test all current api functions
 
 2)

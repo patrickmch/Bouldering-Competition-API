@@ -8,10 +8,9 @@ class CompAPI(API):
         super(UserAPI, self).__init__()
 
     # create new comp:
-    #TODO redo here to use g.req
     def post(self):
-        request["comp_date"] = datetime.strptime(request["comp_date"], "%d/%m/%Y")
+        g.req.set_date('comp_date')
         #add a venue id to the competitions to enforce a relationship between the two collections
-        request["venue_id"] = ObjectId(request["venue_id"])
+        g.req.set_item('venue_id', ObjectId(g.req.get_item('venue_id'))
         crud = Crud(self.request, collection = collection)
         crud.create_doc()
