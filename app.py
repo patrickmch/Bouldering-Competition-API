@@ -15,9 +15,12 @@ all_methods = ['GET', 'POST', 'PUT', 'DELETE']
 @login_manager.user_loader
 def load_user(user_id):
     user = User(db.participants.find_one({'_id' : ObjectId(user_id)}))
-    #use the user_auth class to authenticate the user
-    ua = UserAuth(user)
-    ua.authenticate_user()
+    try:
+        #if the request class exists use the user_auth class to authenticate the user
+        ua = UserAuth(user)
+        ua.authenticate_user()
+    except AttributeError:
+        pass
     return user
 
 def instantiate_req(func):

@@ -48,7 +48,7 @@ class UserAuth:
     def login():
         # TODO refactor login
         user_data = db.participants.find_one({'email' : request.authorization['username']})
-        if pwd_encrypt.verify(req['password'], user_data['password']):
+        if pwd_encrypt.verify(request.authorization['password'], user_data['password']):
             user = User(user_data)
             login_user(user)
             return str(user.get_id())
