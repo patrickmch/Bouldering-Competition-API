@@ -11,5 +11,5 @@ class CompAPI(API):
     def post(self):
         g.req.set_date('comp_date')
         #add a venue id to the competitions to enforce a relationship between the two collections
-        g.req.set_item('venue_id', ObjectId(g.req.get_item('venue_id'))
+        g.req.set_item('venue_id', ObjectId(g.req.get_item('venue_id')))
         crud.create_doc()

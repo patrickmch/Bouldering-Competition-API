@@ -3,7 +3,7 @@ from crud import *
 from user import User
 from user_api import UserAPI
 from competitions_api import CompAPI
-from venues_api import VenueAPI
+from venue_api import VenueAPI
 from user_auth import UserAuth
 from request_helper import RequestHelper
 
