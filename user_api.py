@@ -1,5 +1,4 @@
-from crud import *
-from setup import *
+from setup import g
 from API import API
 
 class UserAPI(API):

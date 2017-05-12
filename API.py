@@ -10,7 +10,8 @@ class API(MethodView):
         self.collection = g.req.get_collection()
 
     def get(self):
-        return crud.find_doc()
+        return str(request.args)
+        # return crud.find_doc()
 
     def post(self):
         return crud.create_doc()

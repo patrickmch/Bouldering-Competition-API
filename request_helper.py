@@ -37,23 +37,30 @@ class RequestHelper:
 
     #find the proper id for the request and set it:
     def set_req_id(self):
-        # default means new user
-        default = 0
-        for k,v in self.req.items():
-            # an email means that a user is being edited
-            if k == 'email':
-                obj = self.collection.find_one({'email' : v})
+        try:
+            #loop through request to find an id or an email
+            for key, value in self.req.items():
+                # an email means that a user is being edited
+                if key == 'email':
+                    email = value
+                    break
+                # an id indicates that a comp or venue is being edited
+                elif key == '_id':
+                    req_id = value
+                    break
+        except AttributeError:
+            # id or email passed in the url string
+            if collection_name == 'participants':
+                email = request.args.get('email')
+            else:
+                req_id = request.args.get('_id')
+        try:
+            obj = self.collection.find_one({'email' : email})
                 try:
                     self.req_id = obj.get('_id')
                 except:
-                    self.req_id = default
-                break
-            # an id indicates that a comp or venue is being edited
-            elif k == '_id':
-                try:
-                    self.req_id = v
-                except:
-                    self.req_id = default
-                break
-
+                    # 0 is default; indicates new user being created
+                    self.req_id = 0
+        except NameError:
+            req_id = self.req_id
         return self.req_id

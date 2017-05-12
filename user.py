@@ -1,5 +1,3 @@
-from setup import *
-
 class User:
     def __init__(self, data):
         self.data = data
