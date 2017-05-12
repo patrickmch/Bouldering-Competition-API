@@ -28,6 +28,8 @@ def instantiate_req(func):
     def wrapper():
         g.req = RequestHelper()
         return func()
+    # rename the wrapper function to the function name to avoid AssertionError:
+    wrapper.func_name = func.func_name
     return wrapper
 
 
