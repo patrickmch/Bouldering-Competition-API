@@ -51,7 +51,8 @@ class RequestHelper:
     #find the proper id for the request and set it:
     def process_request(self):
         if request.method == 'POST':
-            self.req_id = self.api_key()
+            # creating new doc; set defaults for req_id and db_data
+            self.req_id = 0
             self.db_data = None
             return
         elif self.collection_name == 'participants':
@@ -68,6 +69,8 @@ class RequestHelper:
         except AttributeError:
             # there was no json data so find the values passed in the url string
             search_value = self.kwargs.get(identifier)
+        if identifier == '_id':
+            search_value = ObjectId(search_value)
         # query the database to find the corresponding data
         obj = self.collection.find_one({identifier : search_value})
         # set the req_id and request_data
