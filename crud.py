@@ -4,8 +4,12 @@ class Crud:
         self.collection = g.req.get_collection()
 
     def find_doc(self):
-        info = self.collection.find_one(ObjectId(g.req.get_id()))
-        return str(info)
+        try:
+            data = g.req.get_data()
+        except AttributeError:
+            data = self.collection.find_one(ObjectId(g.req.get_id()))
+        data.pop('password', None)
+        return str(data)
 
     def create_doc(self):
         try:

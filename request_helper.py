@@ -11,6 +11,9 @@ class RequestHelper:
         self.process_request() # set the request id and process request data
         self.auth = request.authorization # get the authorization from the request
 
+    def get_data(self):
+        return self.request_data
+
     def get_collection_name(self):
         return self.collection_name
 
