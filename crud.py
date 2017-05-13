@@ -4,10 +4,12 @@ class Crud:
         self.collection = g.req.get_collection()
 
     def find_doc(self):
-        try:
-            data = g.req.get_data()
-        except AttributeError:
+        # we should have already found db data in the process_request method when instantiate_req was called
+        data = g.req.get_db_data()
+        if data == None:
+            # if there was no data already, look again
             data = self.collection.find_one(ObjectId(g.req.get_id()))
+        # remove the password from the return set or None if no password was found
         data.pop('password', None)
         return str(data)
 

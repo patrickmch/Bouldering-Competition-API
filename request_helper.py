@@ -11,8 +11,8 @@ class RequestHelper:
         self.process_request() # set the request id and process request data
         self.auth = request.authorization # get the authorization from the request
 
-    def get_data(self):
-        return self.request_data
+    def get_db_data(self):
+        return self.db_data
 
     def get_collection_name(self):
         return self.collection_name
@@ -69,8 +69,8 @@ class RequestHelper:
         try:
             # data was found; set the req_id and request_data
             self.req_id = obj.get('_id')
-            self.request_data = obj
+            self.db_data = obj
         except AttributeError:
             # no data found; 0 indicates new user being created
             self.req_id = 0
-            self.request_data = None
+            self.db_data = None
