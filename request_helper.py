@@ -1,13 +1,14 @@
 from setup import *
-
+import sys
 class RequestHelper:
 
-    def __init__(self):
+    def __init__(self, **kwargs):
 
+        self.kwargs = kwargs
         self.collection_name = request.path.split('/')[2] # the collection name will be the 2nd part of the path
         self.collection = db[self.collection_name] # get the collection using the collection name
-        self.req = request.get_json() # get the request data in json format
-        self.req_id = self.set_req_id() # set the request id
+        self.req = self.get_request_json() # get the request data in json format
+        self.process_request() # set the request id and process request data
         self.auth = request.authorization # get the authorization from the request
 
     def get_collection_name(self):
@@ -16,8 +17,17 @@ class RequestHelper:
     def get_collection(self):
         return self.collection
 
+    def get_request_json(self):
+        try:
+            return request.get_json()
+        except:
+            return None
+
     def api_key(self):
-        return request.headers['Api-Key']
+        try:
+            return request.headers['Api-Key']
+        except KeyError:
+            abort(401, 'no api_key supplied')
 
     def get_request(self):
         return self.req
@@ -36,31 +46,28 @@ class RequestHelper:
         self.set_item(field_name, datetime.strptime(self.get_item(field_name), "%d/%m/%Y"))
 
     #find the proper id for the request and set it:
-    def set_req_id(self):
+    def process_request(self):
+        if self.collection_name == 'participants':
+            # an email means that a user is being edited
+            identifier = 'email'
+        else:
+            # an id means a venue or comp is being edited
+            identifier = '_id'
         try:
             #loop through request to find an id or an email
             for key, value in self.req.items():
-                # an email means that a user is being edited
-                if key == 'email':
-                    email = value
-                    break
-                # an id indicates that a comp or venue is being edited
-                elif key == '_id':
-                    req_id = value
-                    break
+                if key == identifier:
+                    search_value = value
         except AttributeError:
-            # id or email passed in the url string
-            if collection_name == 'participants':
-                email = request.args.get('email')
-            else:
-                req_id = request.args.get('_id')
+            # there was no json data so find the values passed in the url string
+            search_value = self.kwargs.get(identifier)
+        # query the database to find the corresponding data
+        obj = self.collection.find_one({identifier : search_value})
         try:
-            obj = self.collection.find_one({'email' : email})
-                try:
-                    self.req_id = obj.get('_id')
-                except:
-                    # 0 is default; indicates new user being created
-                    self.req_id = 0
-        except NameError:
-            req_id = self.req_id
-        return self.req_id
+            # data was found; set the req_id and request_data
+            self.req_id = obj.get('_id')
+            self.request_data = obj
+        except AttributeError:
+            # no data found; 0 indicates new user being created
+            self.req_id = 0
+            self.request_data = None
