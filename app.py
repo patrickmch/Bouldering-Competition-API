@@ -25,9 +25,9 @@ def load_user(user_id):
 
 def instantiate_req(func):
     # wraps response function so as to instantiate the RequestHelper class
-    def wrapper(*args, **kwargs):
+    def wrapper(**kwargs):
         g.req = RequestHelper(**kwargs)
-        return func(*args, **kwargs)
+        return func()
     # rename the wrapper function to the function name to avoid AssertionError:
     wrapper.func_name = func.func_name
     return wrapper
