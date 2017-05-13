@@ -35,7 +35,7 @@ class RequestHelper:
     def get_item(self, item):
         return self.req[item]
 
-    def get_req_id(self):
+    def get_id(self):
         return self.req_id
 
     def set_item(self, key, val):
