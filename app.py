@@ -42,4 +42,5 @@ app.add_url_rule('/api/participants/', view_func = instantiate_req(UserAPI.as_vi
 # all other methods require login:
 app.add_url_rule('/api/participants/<string:email>/', view_func = instantiate_req(login_required(UserAPI.as_view('users'))), methods= ['GET', 'PUT', 'DELETE'])
 app.add_url_rule('/api/competitions/<string:_id>/', view_func = instantiate_req(login_required(CompAPI.as_view('competitions'))), methods= all_methods)
+app.add_url_rule('/api/venues/', view_func = instantiate_req(login_required(VenueAPI.as_view('new_venue'))), methods= ['POST'])
 app.add_url_rule('/api/venues/<string:_id>/', view_func = instantiate_req(login_required(VenueAPI.as_view('venues'))), methods= all_methods)

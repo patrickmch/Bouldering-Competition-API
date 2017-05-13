@@ -50,7 +50,11 @@ class RequestHelper:
 
     #find the proper id for the request and set it:
     def process_request(self):
-        if self.collection_name == 'participants':
+        if request.method == 'POST':
+            self.req_id = self.api_key()
+            self.db_data = None
+            return
+        elif self.collection_name == 'participants':
             # an email means that a user is being edited
             identifier = 'email'
         else:
@@ -66,11 +70,6 @@ class RequestHelper:
             search_value = self.kwargs.get(identifier)
         # query the database to find the corresponding data
         obj = self.collection.find_one({identifier : search_value})
-        try:
-            # data was found; set the req_id and request_data
-            self.req_id = obj.get('_id')
-            self.db_data = obj
-        except AttributeError:
-            # no data found; 0 indicates new user being created
-            self.req_id = 0
-            self.db_data = None
+        # set the req_id and request_data
+        self.req_id = obj.get('_id')
+        self.db_data = obj
