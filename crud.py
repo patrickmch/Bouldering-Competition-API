@@ -9,8 +9,10 @@ class Crud:
         if data == None:
             # if there was no data already, look again
             data = self.collection.find_one(ObjectId(g.req.get_id()))
-        # remove the password from the return set or None if no password was found
-        data.pop('password', None)
+        if g.req.get_collection_name() == 'participants':
+            # remove the password and _id from the return set if this is a user
+            data.pop('password', None)
+            data.pop('_id', None)
         return str(data)
 
     def create_doc(self):
