@@ -65,6 +65,9 @@ class RequestHelper:
         # query the database to find the corresponding data
         obj = self.collection.find_one(self.kwargs)
         # set the req_id and request_data
-        #TODO exception handling here: what if no data was found?
-        self.req_id = obj.get('_id')
-        self.db_data = obj
+
+        try:
+            self.req_id = obj.get('_id')
+            self.db_data = obj
+        except AttributeError:
+            g._response.error_response(404)

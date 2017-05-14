@@ -1,4 +1,4 @@
-from setup import g
+from setup import *
 class ResponseHandler:
     def create_response(self, result):
         return str(result.raw_result)
@@ -14,4 +14,4 @@ class ResponseHandler:
         #     # return  "%s record was successfully updated" % str(result.matched_count)
 
     def error_response(self, error):
-        return str(error)
+        abort(401, error)
