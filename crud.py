@@ -29,17 +29,14 @@ class Crud:
         insert = g.req.get_request()
         try:
             result = self.collection.update_one({'_id' : ObjectId(g.req.get_id())}, {'$set' : insert}, False)
-        except KeyError as error:
-            return "A KeyError was raised. Please make sure that you are using the \'_id\' key for all updates, and that the key for the field \'%s\' exists." % insert[1]['$set'].keys()[0]
-        except bson.errors.InvalidId as error:
-            return "Invalid id"
-        else:
-            if result.matched_count < 1:
-                return "No matching record exists for id %s" % insert[0]["_id"]
-            elif result.modified_count < 1:
-                return "Failed to update \'%s\' with an id of \'%s\'" % (insert[1]["$set"].keys()[0], insert[0]["_id"])
-            else:
-                return  "%s record was successfully updated" % str(result.matched_count)
+        except Exception as e:
+            #TODO add logging function here...
+            result = e
+            # except bson.errors.InvalidId as error:
+            #     return "Invalid id"
+        return create_response(result)
+
+
 
     def delete_doc(self):
         result = self.collection.delete_one({"_id" : ObjectId(g.req.get_id())})
@@ -50,4 +47,13 @@ class Crud:
             return "%s record with the id %s was deleted successfully" % (str(result.deleted_count), g.req.get_id())
 
     def create_response(self, result):
-        pass
+        return str(result)
+        if result.matched_count < 1:
+            return
+            # return "No matching record exists for id %s" % insert[0]["_id"]
+        elif result.modified_count < 1:
+            return
+            # return "Failed to update \'%s\' with an id of \'%s\'" % (insert[1]["$set"].keys()[0], insert[0]["_id"])
+        else:
+            return
+            # return  "%s record was successfully updated" % str(result.matched_count)
