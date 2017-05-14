@@ -27,6 +27,9 @@ class Crud:
 
     def update_doc(self):
         insert = g.req.get_request()
+        #TODO sloppy
+        if insert[0].keys()[0] == '_id':
+            insert[0]['_id'] = ObjectId(insert[0]['_id'])
         try:
             result = self.collection.update_one(insert[0], insert[1], False)
         except KeyError as error:

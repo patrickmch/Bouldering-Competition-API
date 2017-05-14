@@ -69,6 +69,7 @@ class RequestHelper:
         except AttributeError:
             # there was no json data so find the values passed in the url string
             search_value = self.kwargs.get(identifier)
+        #TODO sloppy
         if identifier == '_id':
             search_value = ObjectId(search_value)
         # query the database to find the corresponding data

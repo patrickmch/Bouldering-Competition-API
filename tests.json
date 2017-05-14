@@ -40,8 +40,15 @@
 {
   "comp_name": "test",
   "comp_date": "01/01/2017",
-  "venue_id" : "58f381c9e75ab5244ff358f0"
+  "venue_id" : "59179c95e75ab5997d46e704"
 }
+
+//update
+[
+	{"_id" : "59179e13e75ab599be888c52"},
+	{"$set" : {"comp_name" : "jerry comp"}}
+]
+
 // venue id: 591765dbe75ab59641090e79
 //venues
 {
@@ -49,3 +56,8 @@
   "venue_address": "3078 8th st",
   "venue_email": "test@test.com"
 }
+//update
+[
+	{"_id" : "591765dbe75ab59641090e79"},
+	{"$set" : {"venue_name" : "asdf"}}
+]
