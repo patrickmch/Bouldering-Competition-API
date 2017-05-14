@@ -6,7 +6,35 @@ Example:
 >>> import bson
 >>> validator = bson.son.SON([("collMod", "test_collection"), ("validator", {"$or": [{"phone": {"$exists": True}}, {"email": {"$exists": True}}]} ),("validationLevel", "strict")])
 >>> db.command(validator)
-Note that the first key value pair in the list is the command to run (collMod) followed by the collection name (test_collection in this case), the second is the validation rules we want to enforce, and the third is the validation level. Note also that if the collection does not exist, Pymongo will throw an error.
+Note that the first key value pair in the list is the command to run (collMod) followed by the collection name (test_collection in this case), the second is the validation rules we want to enforce, and the third is the validation level.
+
+successful create doc
+{
+  "_id" : <string>,
+  "response_code" : 200
+}
+successful update, delete
+{
+  "response_code" : 200
+}
+successful find
+{
+  "response_code" : 200,
+  "data" : [...]
+}
+unauthorized
+{
+  "response_code" :401
+}
+unauthenticated
+{
+  "response_code" :403
+}
+not found
+{
+  "response_code" : 404
+}
+
 
 
 

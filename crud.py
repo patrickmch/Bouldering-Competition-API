@@ -13,7 +13,7 @@ class Crud:
             # remove the password and _id from the return set if this is a user
             data.pop('password', None)
             data.pop('_id', None)
-        return str(data)
+        return self.create_response(data)
 
     def create_doc(self):
         try:
@@ -27,11 +27,8 @@ class Crud:
 
     def update_doc(self):
         insert = g.req.get_request()
-        #TODO sloppy
-        if insert[0].keys()[0] == '_id':
-            insert[0]['_id'] = ObjectId(insert[0]['_id'])
         try:
-            result = self.collection.update_one(insert[0], insert[1], False)
+            result = self.collection.update_one({'_id' : ObjectId(g.req.get_id())}, {'$set' : insert}, False)
         except KeyError as error:
             return "A KeyError was raised. Please make sure that you are using the \'_id\' key for all updates, and that the key for the field \'%s\' exists." % insert[1]['$set'].keys()[0]
         except bson.errors.InvalidId as error:
@@ -51,3 +48,6 @@ class Crud:
             return "No records were deleted with id %s" % g.req.get_id()
         else:
             return "%s record with the id %s was deleted successfully" % (str(result.deleted_count), g.req.get_id())
+
+    def create_response(self, result):
+        pass
