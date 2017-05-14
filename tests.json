@@ -49,7 +49,7 @@
 	{"$set" : {"comp_name" : "jerry comp"}}
 ]
 
-// venue id: 591765dbe75ab59641090e79
+// venue id: 59188dcee75ab59e4655e9bb
 //venues
 {
   "venue_name": "Test Venue",

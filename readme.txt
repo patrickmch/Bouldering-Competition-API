@@ -8,6 +8,12 @@ Example:
 >>> db.command(validator)
 Note that the first key value pair in the list is the command to run (collMod) followed by the collection name (test_collection in this case), the second is the validation rules we want to enforce, and the third is the validation level.
 
+API usage:
+The API works by searching three different collections (users, competitions, and venues) in the url string, and then using the http verb (POST, GET, PUT, DELETE) to handle your specific request. Most http method/collection combinations require you to send an api_key in the header with your request and require you to have logged in (done by sending your email and password to /api/login via header authentication). The only exception to this is POSTing to users as that creates a user, and returns an api_key, which that user can then use for all future requests.
+GET, PUT or DELETE requests all require you to send an identifier for the database object you want to reference (e.g. api/venues/<identifier>/). In the case of users, it will be an email address; competitions and venues both require a comp or venue id respectively.
+
+
+
 successful create doc
 {
   "_id" : <string>,
