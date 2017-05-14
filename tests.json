@@ -61,3 +61,11 @@
 	{"_id" : "591765dbe75ab59641090e79"},
 	{"$set" : {"venue_name" : "asdf"}}
 ]
+
+
+//tests:
+// appears 'n' : 1 means everything went ok
+update: {'updatedExisting': True, u'nModified': 0, u'ok': 1.0, u'n': 1}
+delete: {u'ok': 1.0, u'n': 1}
+create: inserted_id
+read: query result
