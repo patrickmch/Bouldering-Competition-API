@@ -26,17 +26,13 @@ Collection Schema:
     -routes
       _id, name, grade, points
 
-current thinking on refactor:
-Each of the http verbs will determine what method gets called inside of the requested collection. The url structure will be https://bouldercomp.com/api/v1/<collection>/
-When the classes' methods are called they will do any necessary processing (at least finding the object id to be edited) and pass it to one of the four CRUD methods in the Crud class. That method will then return a JSON response telling the client whether there was a success or failure and any other relevant information.
-
 
 To Do:
--test
+-everything should be returned to the client as JSON
 -clean up imports
+-better error handling
+-foreign key constraint on venue_id in competitions
 -address fields have separate street, zip, etc
 -have other user validate send
 -function to pull down results for the comp
 -add api versioning
--everything should be returned to the client as JSON
--should login use the RequestHelper?
