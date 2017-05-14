@@ -50,30 +50,21 @@ class RequestHelper:
 
     #find the proper id for the request and set it:
     def process_request(self):
-        if request.method == 'POST':
+        method = request.method
+        if method == 'POST':
             # creating new doc; set defaults for req_id and db_data
             self.req_id = 0
             self.db_data = None
             return
-        elif self.collection_name == 'participants':
-            # an email means that a user is being edited
-            identifier = 'email'
-        else:
-            # an id means a venue or comp is being edited
-            identifier = '_id'
         try:
-            #loop through request to find an id or an email
-            for key, value in self.req.items():
-                if key == identifier:
-                    search_value = value
-        except AttributeError:
-            # there was no json data so find the values passed in the url string
-            search_value = self.kwargs.get(identifier)
-        #TODO sloppy
-        if identifier == '_id':
-            search_value = ObjectId(search_value)
+            self.kwargs['_id'] = ObjectId(self.kwargs['_id'])
+        except KeyError:
+            # nothing to do here- the other identifiers (ie. email) do not need to be converted to ObjectId
+            pass
+
         # query the database to find the corresponding data
-        obj = self.collection.find_one({identifier : search_value})
+        obj = self.collection.find_one(self.kwargs)
         # set the req_id and request_data
+        # TODO add error handling- what happens if no data is found?
         self.req_id = obj.get('_id')
         self.db_data = obj
