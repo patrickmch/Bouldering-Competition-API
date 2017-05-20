@@ -1,5 +1,6 @@
 from setup import *
 import sys
+from response_handler import ErrorResponse
 class RequestHelper:
 
     def __init__(self, **kwargs):
@@ -50,6 +51,7 @@ class RequestHelper:
 
     #find the proper id for the request and set it:
     def process_request(self):
+        raise ErrorResponse(400)
         method = request.method
         if method == 'POST':
             # creating new doc; set defaults for req_id and db_data
@@ -70,4 +72,4 @@ class RequestHelper:
             self.req_id = obj.get('_id')
             self.db_data = obj
         except AttributeError:
-            g._response.error_response(404)
+            raise ErrorResponse(404)

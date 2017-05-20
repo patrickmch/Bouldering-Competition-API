@@ -6,7 +6,7 @@ from competitions_api import CompAPI
 from venue_api import VenueAPI
 from user_auth import UserAuth
 from request_helper import RequestHelper
-from response_handler import ResponseHandler
+from response_handler import ResponseHandler, ErrorResponse
 
 app = Flask(__name__)
 login_manager.init_app(app)
@@ -23,6 +23,11 @@ def load_user(user_id):
     except AttributeError:
         pass
     return user
+
+@app.errorhandler(ErrorResponse)
+def handle_error(error):
+    response = jsonify(error.to_dict())
+    return response
 
 def instantiate_classes(func):
     # wraps response function so as to instantiate the RequestHelper class
