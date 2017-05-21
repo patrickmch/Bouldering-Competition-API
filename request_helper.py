@@ -51,7 +51,6 @@ class RequestHelper:
 
     #find the proper id for the request and set it:
     def process_request(self):
-        raise ErrorResponse(400)
         method = request.method
         if method == 'POST':
             # creating new doc; set defaults for req_id and db_data

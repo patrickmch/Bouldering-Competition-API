@@ -65,7 +65,7 @@ To Do:
 -everything should be returned to the client as JSON
 -clean up imports
 -have a function to return a multiple matched values from a basic search (e.g. a bunch of comps)
--better error handling
+-implement this mongokit: http://flask.pocoo.org/docs/0.12/patterns/mongokit/
 -foreign key constraint on venue_id in competitions
 -address fields have separate street, zip, etc
 -have other user validate send

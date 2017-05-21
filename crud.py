@@ -23,7 +23,7 @@ class Crud:
             logging.error(error)
             return "Failed to insert the requested data in to the database as one or more fields was missing or incomplete"
         else:
-            return "success %s" % str(new_id)
+            return "success %s" % str(result)
 
     def update_doc(self):
         insert = g.req.get_request()
