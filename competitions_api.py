@@ -1,4 +1,3 @@
-from crud import *
 from setup import *
 from API import API
 

@@ -1,7 +1,6 @@
 from setup import *
 from user import *
 from request_helper import RequestHelper
-import flask_login
 from flask import request
 class UserAuth:
 
@@ -47,13 +46,13 @@ class UserAuth:
 
     @staticmethod
     def login():
-        # TODO refactor login
         user_data = db.participants.find_one({'email' : request.authorization['username']})
         if pwd_encrypt.verify(request.authorization['password'], user_data['password']):
             user = User(user_data)
             flask_login.login_user(user)
             return str(user.get_id())
         else:
+            # TODO return as json
             return 'incorrect password for email %s' % request.authorization['username']
 
     @staticmethod

@@ -1,4 +1,4 @@
-from setup import g, pwd_encrypt
+from setup import *
 from API import API
 
 class UserAPI(API):

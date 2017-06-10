@@ -1,4 +1,4 @@
-# boilerplate and imports
+# imports that are used in most files
 from flask import abort, g
 import flask
 import pymongo
