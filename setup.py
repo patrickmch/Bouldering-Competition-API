@@ -2,19 +2,13 @@
 from flask import Flask, jsonify, request, abort, make_response, url_for, session, views, g
 from functools import wraps
 from datetime import datetime
-from pprint import pprint
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from passlib.context import CryptContext
 import flask_login
 import bson
-import pymongo
-import logging
-import pprint
-import json
-import inspect
-import ast
+
 
 
 # database and colllection setup

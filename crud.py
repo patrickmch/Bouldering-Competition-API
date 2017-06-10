@@ -7,8 +7,6 @@ class Crud:
     def find_doc(self):
         # we should have already found db data in the process_request method when instantiate_req was called
         data = g.req.get_db_data()
-        if data == None:
-            raise ErrorResponse(404)
         if g.req.get_collection_name() == 'participants':
             # remove the password and _id from the return set if this is a user
             data.pop('password', None)
@@ -29,7 +27,8 @@ class Crud:
         insert = g.req.get_request()
         result = self.collection.update_one({'_id' : ObjectId(g.req.get_id())}, {'$set' : insert}, False)
         if result.matched_count < 1:
-            raise ErrorResponse(404)
+            #unknown error- if the document was not found a 404 would have already been raised in process request
+            raise ErrorResponse(500)
         return create_response(200)
 
 
@@ -37,5 +36,6 @@ class Crud:
     def delete_doc(self):
         result = self.collection.delete_one({"_id" : ObjectId(g.req.get_id())})
         if result.deleted_count < 1:
-            raise ErrorResponse(404)
+            #unknown error- if the document was not found a 404 would have already been raised in process request
+            raise ErrorResponse(500)
         return create_response(200)

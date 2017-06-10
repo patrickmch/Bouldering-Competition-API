@@ -62,7 +62,6 @@ Collection Schema:
 
 
 To Do:
--everything should be returned to the client as JSON
 -clean up imports
 -have a function to return a multiple matched values from a basic search (e.g. a bunch of comps)
 -implement this mongokit: http://flask.pocoo.org/docs/0.12/patterns/mongokit/

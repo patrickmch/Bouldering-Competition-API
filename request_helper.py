@@ -31,7 +31,7 @@ class RequestHelper:
         try:
             return request.headers['Api-Key']
         except KeyError:
-            abort(401, 'no api_key supplied')
+            raise ErrorResponse(401, 'No API key was supplied')
 
     def get_request(self):
         return self.req
