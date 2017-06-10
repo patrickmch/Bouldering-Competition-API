@@ -1,5 +1,6 @@
 from setup import *
 import sys
+from response_handler import ErrorResponse
 class RequestHelper:
 
     def __init__(self, **kwargs):
@@ -65,6 +66,9 @@ class RequestHelper:
         # query the database to find the corresponding data
         obj = self.collection.find_one(self.kwargs)
         # set the req_id and request_data
-        # TODO add error handling- what happens if no data is found?
-        self.req_id = obj.get('_id')
-        self.db_data = obj
+
+        try:
+            self.req_id = obj.get('_id')
+            self.db_data = obj
+        except AttributeError:
+            raise ErrorResponse(404)

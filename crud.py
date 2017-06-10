@@ -1,4 +1,5 @@
 from setup import *
+from response_handler import create_response, ErrorResponse
 class Crud:
     def __init__(self):
         self.collection = g.req.get_collection()
@@ -7,47 +8,34 @@ class Crud:
         # we should have already found db data in the process_request method when instantiate_req was called
         data = g.req.get_db_data()
         if data == None:
-            # if there was no data already, look again
-            data = self.collection.find_one(ObjectId(g.req.get_id()))
+            raise ErrorResponse(404)
         if g.req.get_collection_name() == 'participants':
             # remove the password and _id from the return set if this is a user
             data.pop('password', None)
             data.pop('_id', None)
-        return str(data)
+        else:
+            data['_id'] = str(data['_id'])
+        return create_response(201, data)
 
     def create_doc(self):
         try:
-            new_id = self.collection.insert_one(g.req.get_request()).inserted_id
-        except pymongo.errors.WriteError as error:
-            #more detailed exceptions (eg. what fields were not filled out) are not possible with current Mongo validation
-            logging.error(error)
-            return "Failed to insert the requested data in to the database as one or more fields was missing or incomplete"
-        else:
-            return "success %s" % str(new_id)
+            new_id = str(self.collection.insert_one(g.req.get_request()).inserted_id)
+        except pymongo.errors.WriteError:
+             raise ErrorResponse(400, 'Failed to insert the requested data in to the database because one or more fields was missing or incomplete')
+        return create_response(200, {'_id' : new_id})
+
 
     def update_doc(self):
         insert = g.req.get_request()
-        #TODO sloppy
-        if insert[0].keys()[0] == '_id':
-            insert[0]['_id'] = ObjectId(insert[0]['_id'])
-        try:
-            result = self.collection.update_one(insert[0], insert[1], False)
-        except KeyError as error:
-            return "A KeyError was raised. Please make sure that you are using the \'_id\' key for all updates, and that the key for the field \'%s\' exists." % insert[1]['$set'].keys()[0]
-        except bson.errors.InvalidId as error:
-            return "Invalid id"
-        else:
-            if result.matched_count < 1:
-                return "No matching record exists for id %s" % insert[0]["_id"]
-            elif result.modified_count < 1:
-                return "Failed to update \'%s\' with an id of \'%s\'" % (insert[1]["$set"].keys()[0], insert[0]["_id"])
-            else:
-                return  "%s record was successfully updated" % str(result.matched_count)
+        result = self.collection.update_one({'_id' : ObjectId(g.req.get_id())}, {'$set' : insert}, False)
+        if result.matched_count < 1:
+            raise ErrorResponse(404)
+        return create_response(200)
+
+
 
     def delete_doc(self):
         result = self.collection.delete_one({"_id" : ObjectId(g.req.get_id())})
-        #TODO do not reveal id if it is a user id
         if result.deleted_count < 1:
-            return "No records were deleted with id %s" % g.req.get_id()
-        else:
-            return "%s record with the id %s was deleted successfully" % (str(result.deleted_count), g.req.get_id())
+            raise ErrorResponse(404)
+        return create_response(200)
