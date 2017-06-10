@@ -1,5 +1,5 @@
 from setup import *
-import flask
+
 def create_response(status_code, data=None):
     return flask.jsonify({'status_code' : status_code,'data' : data})
 
@@ -18,6 +18,8 @@ class ErrorResponse(Exception):
         Exception.__init__(self)
         if message is None:
             self.message = err_messages[status_code]
+        else:
+            self.message = message
         self.status_code = status_code
         self.payload = payload
 

@@ -38,8 +38,10 @@ class RequestHelper:
         return self.req
 
     def get_item(self, item):
-        return self.req[item]
-
+        try:
+            return self.req[item]
+        except KeyError:
+            raise ErrorResponse(401, 'You did not supply an %s field in your request' % item)
     def get_id(self):
         return self.req_id
 

@@ -13,8 +13,7 @@ class UserAPI(API):
         req_email = req.get_item('email')
         query = self.collection.find({'email' : req_email})
         if query.count() > 0:
-            #TODO raise ErrorResponse
-            return 'The email you provided is already in use.'
+            raise ErrorResponse(409, 'The email you provided is already in use')
         #create new datetime object for easier querying
         req.set_date('birthday')
         # encrypt password

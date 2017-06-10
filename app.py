@@ -5,7 +5,6 @@ from competitions_api import CompAPI
 from venue_api import VenueAPI
 from user_auth import UserAuth
 from request_helper import RequestHelper
-from response_handler import ErrorResponse
 from flask import Flask
 
 
