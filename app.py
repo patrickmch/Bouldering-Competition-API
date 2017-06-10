@@ -6,7 +6,7 @@ from competitions_api import CompAPI
 from venue_api import VenueAPI
 from user_auth import UserAuth
 from request_helper import RequestHelper
-from response_handler import ResponseHandler, ErrorResponse
+from response_handler import create_response, ErrorResponse
 
 app = Flask(__name__)
 login_manager.init_app(app)
@@ -32,7 +32,6 @@ def handle_error(error):
 def instantiate_classes(func):
     # wraps response function so as to instantiate the RequestHelper class
     def wrapper(**kwargs):
-        g._response = ResponseHandler()
         #TODO renaming this with a lowdash could be nice...
         g.req = RequestHelper(**kwargs)
         return func()
