@@ -1,6 +1,7 @@
 from setup import *
 from response_handler import ErrorResponse
 from datetime import datetime
+from flask import request
 class RequestHelper:
 
     def __init__(self, **kwargs):
@@ -58,9 +59,9 @@ class RequestHelper:
             self.db_data = None
             return
         try:
-            self.kwargs['_id'] = ObjectId(self.kwargs['_id'])
+            self.kwargs['_id'] = bson.ObjectId(self.kwargs['_id'])
         except KeyError:
-            # nothing to do here- the other identifiers (ie. email) do not need to be converted to ObjectId
+            # nothing to do here- the other identifiers (ie. email) do not need to be converted to bson.ObjectId
             pass
 
         # query the database to find the corresponding data

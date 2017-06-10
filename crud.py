@@ -25,7 +25,7 @@ class Crud:
 
     def update_doc(self):
         insert = g.req.get_request()
-        result = self.collection.update_one({'_id' : ObjectId(g.req.get_id())}, {'$set' : insert}, False)
+        result = self.collection.update_one({'_id' : bson.ObjectId(g.req.get_id())}, {'$set' : insert}, False)
         if result.matched_count < 1:
             #unknown error- if the document was not found a 404 would have already been raised in process request
             raise ErrorResponse(500)
@@ -34,7 +34,7 @@ class Crud:
 
 
     def delete_doc(self):
-        result = self.collection.delete_one({"_id" : ObjectId(g.req.get_id())})
+        result = self.collection.delete_one({"_id" : bson.ObjectId(g.req.get_id())})
         if result.deleted_count < 1:
             #unknown error- if the document was not found a 404 would have already been raised in process request
             raise ErrorResponse(500)

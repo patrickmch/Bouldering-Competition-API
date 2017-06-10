@@ -17,7 +17,7 @@ _methods = ['GET', 'PUT', 'DELETE']
 
 @login_manager.user_loader
 def load_user(user_id):
-    user = User(db.participants.find_one({'_id' : ObjectId(user_id)}))
+    user = User(db.participants.find_one({'_id' : bson.ObjectId(user_id)}))
     try:
         #if the request class exists use the user_auth class to authenticate the user
         ua = UserAuth(user)
@@ -28,8 +28,7 @@ def load_user(user_id):
 
 @app.errorhandler(ErrorResponse)
 def handle_error(error):
-    response = jsonify(error.to_dict())
-    return response
+    return error.to_dict()
 
 def instantiate_classes(func):
     # wraps response function so as to instantiate the RequestHelper class

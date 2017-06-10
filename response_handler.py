@@ -1,6 +1,7 @@
 from setup import *
+import flask
 def create_response(status_code, data=None):
-    return jsonify({'status_code' : status_code,'data' : data})
+    return flask.jsonify({'status_code' : status_code,'data' : data})
 
 class ErrorResponse(Exception):
 
@@ -24,4 +25,4 @@ class ErrorResponse(Exception):
         err_response = dict(self.payload or ())
         err_response['message'] = self.message
         err_response['status_code'] = self.status_code
-        return err_response
+        return flask.jsonify(err_response)

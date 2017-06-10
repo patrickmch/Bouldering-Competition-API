@@ -1,7 +1,9 @@
 from crud import Crud
 from setup import *
 from user import User
-MethodView = views.MethodView
+#TODO clean this up
+from flask import views
+MethodView = flask.views.MethodView
 
 class API(MethodView):
 

@@ -1,6 +1,6 @@
 # boilerplate and imports
-from flask import Flask, jsonify, request, abort, make_response, url_for, session, views, g
-from bson.objectid import ObjectId
+from flask import Flask, jsonify, abort, g
+import flask
 import pymongo
 import flask_login
 import passlib.context
