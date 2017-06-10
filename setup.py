@@ -1,22 +1,19 @@
 # boilerplate and imports
 from flask import Flask, jsonify, request, abort, make_response, url_for, session, views, g
-from functools import wraps
-from datetime import datetime
-from pymongo import MongoClient
 from bson.objectid import ObjectId
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from passlib.context import CryptContext
+import pymongo
 import flask_login
+import passlib.context
 import bson
 
 
 
 # database and colllection setup
-login_manager = LoginManager()
-client = MongoClient()
+login_manager = flask_login.LoginManager()
+client = pymongo.MongoClient()
 db = client.test
 # passlib; documentation at https://passlib.readthedocs.io/en/stable/narr/quickstart.html
-pwd_encrypt = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
+pwd_encrypt = passlib.context.CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 
 # function to validate collection information

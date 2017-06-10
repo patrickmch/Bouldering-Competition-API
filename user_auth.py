@@ -1,7 +1,7 @@
 from setup import *
 from user import *
 from request_helper import RequestHelper
-
+import flask_login
 class UserAuth:
 
     def __init__(self, user):
@@ -50,12 +50,12 @@ class UserAuth:
         user_data = db.participants.find_one({'email' : request.authorization['username']})
         if pwd_encrypt.verify(request.authorization['password'], user_data['password']):
             user = User(user_data)
-            login_user(user)
+            flask_login.login_user(user)
             return str(user.get_id())
         else:
             return 'incorrect password for email %s' % request.authorization['username']
 
     @staticmethod
     def logout():
-        logout_user()
+        flask_login.logout_user()
         return 'logged out'

@@ -7,6 +7,8 @@ from venue_api import VenueAPI
 from user_auth import UserAuth
 from request_helper import RequestHelper
 from response_handler import create_response, ErrorResponse
+from functools import wraps
+import flask_login
 
 app = Flask(__name__)
 login_manager.init_app(app)
@@ -48,12 +50,12 @@ app.add_url_rule('/api/login/', 'login', UserAuth.login)
 # posting to user creates a user and therefore does not require login:
 app.add_url_rule('/api/participants/', view_func = instantiate_classes(UserAPI.as_view('new_user')), methods= ['POST'])
 # all other methods require login:
-app.add_url_rule('/api/participants/<string:email>/', view_func = instantiate_classes(login_required(UserAPI.as_view('users'))), methods= _methods)
+app.add_url_rule('/api/participants/<string:email>/', view_func = instantiate_classes(flask_login.login_required(UserAPI.as_view('users'))), methods= _methods)
 
 # venues
-app.add_url_rule('/api/competitions/<string:_id>/', view_func = instantiate_classes(login_required(CompAPI.as_view('competitions'))), methods= _methods)
-app.add_url_rule('/api/competitions/', view_func = instantiate_classes(login_required(CompAPI.as_view('new_comp'))), methods= ['POST'])
+app.add_url_rule('/api/competitions/<string:_id>/', view_func = instantiate_classes(flask_login.login_required(CompAPI.as_view('competitions'))), methods= _methods)
+app.add_url_rule('/api/competitions/', view_func = instantiate_classes(flask_login.login_required(CompAPI.as_view('new_comp'))), methods= ['POST'])
 
 # comps
-app.add_url_rule('/api/venues/', view_func = instantiate_classes(login_required(VenueAPI.as_view('new_venue'))), methods= ['POST'])
-app.add_url_rule('/api/venues/<string:_id>/', view_func = instantiate_classes(login_required(VenueAPI.as_view('venues'))), methods= _methods)
+app.add_url_rule('/api/venues/', view_func = instantiate_classes(flask_login.login_required(VenueAPI.as_view('new_venue'))), methods= ['POST'])
+app.add_url_rule('/api/venues/<string:_id>/', view_func = instantiate_classes(flask_login.login_required(VenueAPI.as_view('venues'))), methods= _methods)
