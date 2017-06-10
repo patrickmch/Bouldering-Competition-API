@@ -2,6 +2,7 @@ from setup import *
 from user import *
 from request_helper import RequestHelper
 import flask_login
+from flask import request
 class UserAuth:
 
     def __init__(self, user):
