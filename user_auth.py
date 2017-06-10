@@ -2,29 +2,11 @@ from setup import *
 from user import *
 from request_helper import RequestHelper
 from flask import request
+from settings import user_authorization
 class UserAuth:
 
     def __init__(self, user):
         self.user = user
-
-    # this dict determines user roles
-    user_authorization = {
-        'participants': {
-            'participant': False,
-            'judge' : True,
-            'admin': True
-        },
-        'competitions': {
-            'participant' : False,
-            'judge' : True,
-            'admin': True
-        },
-        'venue' : {
-            'participant' : False,
-            'judge' : False,
-            'admin' : True
-        }
-    }
 
     # check if the user is sending data they are authorized to edit
     def can_edit_request(self):
@@ -34,7 +16,7 @@ class UserAuth:
         else:
             #use the collection name and user role to determine if user is authorized to modify a collection
             #based on values stored in a dictionary
-            return self.user_authorization[g.req.get_collection_name()][self.user.get_var('role')]
+            return user_authorization[g.req.get_collection_name()][self.user.get_var('role')]
 
     def authenticate_user(self):
         if g.req.api_key() != self.user.get_id():
@@ -52,8 +34,7 @@ class UserAuth:
             flask_login.login_user(user)
             return str(user.get_id())
         else:
-            # TODO return as json
-            return 'incorrect password for email %s' % request.authorization['username']
+            raise ErrorResponse(401, 'Invalid password')
 
     @staticmethod
     def logout():

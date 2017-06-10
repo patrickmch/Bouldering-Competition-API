@@ -41,7 +41,7 @@ class RequestHelper:
         try:
             return self.req[item]
         except KeyError:
-            raise ErrorResponse(401, 'You did not supply an %s field in your request' % item)
+            raise ErrorResponse(400, 'You did not supply an %s field in your request' % item)
     def get_id(self):
         return self.req_id
 
