@@ -7,7 +7,7 @@ class Crud:
     def find_doc(self):
         # we should have already found db data in the process_request method when instantiate_req was called
         data = g.req.get_db_data()
-        if g.req.get_collection_name() == 'participants':
+        if g.req.get_collection_name() == 'users':
             # remove the password and _id from the return set if this is a user
             data.pop('password', None)
             data.pop('_id', None)

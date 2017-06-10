@@ -27,7 +27,7 @@ class UserAuth:
 
     @staticmethod
     def login():
-        user_data = db.participants.find_one({'email' : request.authorization['username']})
+        user_data = db.users.find_one({'email' : request.authorization['username']})
         if pwd_encrypt.verify(request.authorization['password'], user_data['password']):
             user = User(user_data)
             flask_login.login_user(user)

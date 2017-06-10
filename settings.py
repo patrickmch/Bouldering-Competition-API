@@ -9,7 +9,7 @@ err_messages = {
 
 # this dict determines user roles
 user_authorization = {
-    'participants': {
+    'users': {
         'participant': False,
         'judge' : True,
         'admin': True

@@ -15,7 +15,7 @@ _methods = ['GET', 'PUT', 'DELETE']
 
 @login_manager.user_loader
 def load_user(user_id):
-    user = User(db.participants.find_one({'_id' : bson.ObjectId(user_id)}))
+    user = User(db.users.find_one({'_id' : bson.ObjectId(user_id)}))
     try:
         #if the request class exists use the user_auth class to authenticate the user
         ua = UserAuth(user)
@@ -45,9 +45,9 @@ app.add_url_rule('/api/login/', 'login', UserAuth.login)
 
 # users
 # posting to user creates a user and therefore does not require login:
-app.add_url_rule('/api/participants/', view_func = instantiate_classes(UserAPI.as_view('new_user')), methods= ['POST'])
+app.add_url_rule('/api/users/', view_func = instantiate_classes(UserAPI.as_view('new_user')), methods= ['POST'])
 # all other methods require login:
-app.add_url_rule('/api/participants/<string:email>/', view_func = instantiate_classes(flask_login.login_required(UserAPI.as_view('users'))), methods= _methods)
+app.add_url_rule('/api/users/<string:email>/', view_func = instantiate_classes(flask_login.login_required(UserAPI.as_view('users'))), methods= _methods)
 
 # venues
 app.add_url_rule('/api/competitions/<string:_id>/', view_func = instantiate_classes(flask_login.login_required(CompAPI.as_view('competitions'))), methods= _methods)

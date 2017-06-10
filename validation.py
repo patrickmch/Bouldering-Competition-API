@@ -13,7 +13,7 @@ def collection_validation(collection_name, validation_dict, validation_level):
 #this is a regex to enforce the storage of valid emails
 email_regex = {"$regex": "(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"}
 
-participants_validation = {
+users_validation = {
     "$and" :
     [
         {"fname" : {"$type" : "string"}},

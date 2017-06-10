@@ -62,7 +62,7 @@ Collection Schema:
 
 
 To Do:
--clean up imports
+-users should be renamed users
 -have a function to return a multiple matched values from a basic search (e.g. a bunch of comps)
 -implement this mongokit: http://flask.pocoo.org/docs/0.12/patterns/mongokit/
 -foreign key constraint on venue_id in competitions
