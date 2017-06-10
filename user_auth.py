@@ -1,6 +1,5 @@
 from setup import *
 from user import *
-from request_helper import RequestHelper
 from flask import request
 from settings import user_authorization
 class UserAuth:
@@ -20,10 +19,10 @@ class UserAuth:
 
     def authenticate_user(self):
         if g.req.api_key() != self.user.get_id():
-            abort(401, 'You did not provide valid login credentials')
+            raise ErrorResponse(401, 'You did not provide valid login credentials')
         elif not self.can_edit_request():
             #user not authenticated
-            abort(403, 'You do not have permission to access the requested resource.')
+            raise ErrorResponse(403, 'You do not have permission to access the requested resource.')
 
 
     @staticmethod
@@ -32,11 +31,11 @@ class UserAuth:
         if pwd_encrypt.verify(request.authorization['password'], user_data['password']):
             user = User(user_data)
             flask_login.login_user(user)
-            return str(user.get_id())
+            return create_response(200, {'api_key' : str(user.get_id())})
         else:
             raise ErrorResponse(401, 'Invalid password')
 
     @staticmethod
     def logout():
         flask_login.logout_user()
-        return 'logged out'
+        return create_response(200, {'message' : 'Logout successful'})
